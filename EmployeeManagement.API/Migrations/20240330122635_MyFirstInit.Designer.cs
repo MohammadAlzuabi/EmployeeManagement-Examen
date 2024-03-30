@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.API.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240323110326_FirstInit")]
-    partial class FirstInit
+    [Migration("20240330122635_MyFirstInit")]
+    partial class MyFirstInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,9 +82,6 @@ namespace EmployeeManagement.API.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    b.Property<float?>("Time")
-                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

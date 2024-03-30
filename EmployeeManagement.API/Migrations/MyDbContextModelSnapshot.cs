@@ -55,35 +55,6 @@ namespace EmployeeManagement.API.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("EmployeeManagement.Core.Models.Schedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserIdId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("WorkHours")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.HasIndex("UserIdId");
-
-                    b.ToTable("Schedules");
-                });
-
             modelBuilder.Entity("EmployeeManagement.Core.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -116,23 +87,6 @@ namespace EmployeeManagement.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Core.Models.Schedule", b =>
-                {
-                    b.HasOne("EmployeeManagement.Core.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
-                    b.HasOne("EmployeeManagement.Core.Models.User", "UserId")
-                        .WithMany()
-                        .HasForeignKey("UserIdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("UserId");
                 });
 
             modelBuilder.Entity("EmployeeManagement.Core.Models.User", b =>
