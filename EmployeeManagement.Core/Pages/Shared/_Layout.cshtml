@@ -17,54 +17,86 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body class="bodycolor">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow webcolor py-3 mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand nav-link">
-                    <strong>Test</strong>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body>
 
-                <div class="collapse navbar-collapse" id="navbarExample01">
+
+    <div class="menu-wrapper">
+        <div class="sidebar-header">
+
+
+            @if (user != null && user.Id != 0)
+            {
+                <div class="sideBar">
+                    <div><img src=https://drive.google.com/thumbnail?id=1aWmbSZADIAOqZZ-TZ6IxTcCO72rDiUn1 /></div>
+
+                    <ul>
+
+                        @if (user.IsAdmin())
+                        {
+                            <li >
+                                <i class="bi bi-person">
+                                    <a  asp-area="" asp-page="/Admin"><label>Admin</label></a>
+                                </i>
+                            </li>
+                        }
+                        <li><i class="fas fa-chart-bar"></i><label>Statistics</label></li>
+                        <li><i class="fas fa-cogs"></i><label>Services</label></li>
+                        <li><i class="bi bi-person"></i><label>Profile</label></li>
+                        <li>
+                            <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
+                                <i class="bi bi-box-arrow-in-left">
+                                    <button type="submit" class="btn btn-light"><label>Logout</label></button>
+                                </i>
+                            </form>
+                        </li>
+
+
+                    </ul>
+
+                </div>
+            }
+
+            <div class="backdrop"></div>
+            <div class="content">
+                <header>
                     @if (user != null && user.Id != 0)
                     {
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            @if (user.IsAdmin())
-                            {
-                                <li class="nav-item active">
-                                    <a class="nav-link font-monospace" asp-area="" asp-page="/Admin">Admin</a>
-                                </li>
-                            }
-                        </ul>
-                        <ul class="nav justify-content-end">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span > <i class="bi bi-person-circle "></i></span>
-                                </a>
-                                <ul class="dropdown-menu" >
-                                    <li>
-                                        <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
-                                            <button type="submit" class="dropdown-item ">Logout</button>
-                                        </form>
-                                    </li>
-                                   
-                                </ul>
-                            </li>
-                        </ul>
+                        <div class="menu-button" id='desktop'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="menu-button" id='mobile'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     }
+                    <h1>Empolyee Mangamenet</h1> <img src=https://drive.google.com/thumbnail?id=1aPr3-KTa66Bxye3IGajBxbBef4XOoaVv />
+                </header>
+                <div class="content-data">
+                    <div class="container">
+                        <main role="main" class="pb-3">
+                            @RenderBody()
+                        </main>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+
+        </div>
     </div>
+
+
+
+
+
+
+    @*     <div class="container">
+    <main role="main" class="pb-3">
+    @RenderBody()
+    </main>
+    </div> *@
 
     <footer class="border-top footer text-muted">
         <div class="container-fluid text-light d-flex justify-content-end px-3">
@@ -77,5 +109,29 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $("#mobile").click(function () {
+            $('.sideBar').addClass("showMenu");
+            $('.sideBar').removeClass("widthChange");
+            $('.backdrop').addClass('showBackdrop')
+        });
+        $(".cross-icon").click(function () {
+            $('.sideBar').removeClass("showMenu");
+            $('.backdrop').removeClass('showBackdrop')
+        });
+        $(".backdrop").click(function () {
+            $('.sideBar').removeClass("showMenu");
+            $('.backdrop').removeClass('showBackdrop')
+        });
+        $("#desktop").click(function () {
+            $('li label').toggleClass("hideMenuList");
+            $('.sideBar').toggleClass("widthChange");
+        });
+        $('li').click(function () {
+            $('li').removeClass();
+            $(this).addClass('selected');
+            $('.sideBar').removeClass("showMenu");
+        });
+    </script>
 </body>
 </html>
