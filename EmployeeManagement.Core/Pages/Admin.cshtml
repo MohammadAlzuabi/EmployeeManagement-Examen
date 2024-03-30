@@ -1,0 +1,232 @@
+﻿@page
+@model EmployeeManagement.Core.Pages.AdminModel
+@{
+}
+@if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().RoleId == 1)
+{
+    <div>
+        <div class="row d-flex">
+            <div class=" col7 p-0 my-3 d-flex justify-content-start">
+                <a asp-route-id="" class="btn webcolor mb-3 text-white" data-bs-toggle="modal" data-bs-target="#modalCreateNewUser" name="modalCreateNewUser">Add Employee</a>
+            </div>
+            <div class="modal fade" id="modalCreateNewUser" tabindex="-1" aria-labelledby="modalCreateNewUserLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark text-white">
+                            <h1 class="modal-title fs-5" id="returnMessageLabel">Add new employee</h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start">                    
+                            <form method="post" asp-page-handler="NewUser">
+                                <div class="mb-3">
+                                    <label for="NewUserName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="NewUserName" name="NewUser.Name" required minlength="1" placeholder="Enter Employee Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="NewUserEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="NewUserEmail" name="NewUser.Email" required minlength="1" placeholder="Enter Employee Email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="NewUserPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="NewUserPassword" name="NewUser.Password" required minlength="1" placeholder="Enter Employee Password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="NewUserDepartment" class="form-label">Department</label>
+                                    <select class="form-select" asp-for="NewUser.Department">
+                                        @if (Model.Departments is not null)
+                                        {
+                                            @foreach (var department in Model.Departments)
+                                            {
+
+                                                <option value="@department.Id" selected>@department.Name</option>
+
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="NewUserRole" class="form-label">Roll</label>
+                                    <select class="form-select" id="NewUserRole" name="NewUser.RoleId" aria-label="Välj användarroll">
+                                        @if (Model.Roles is not null)
+                                        {
+                                            @foreach (var role in Model.Roles)
+                                            {
+                                                <option value="@role.Id">@role.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close" />
+                                    <input type="submit" name="addTask" value="Add" class="btn btn-dark" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- List of all users -->
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12" >
+                    <div class="card ">
+                        <div class="card-body ">
+                            <table class="table">
+                                <thead >
+                                    <tr class="teblecolor">
+                                        <th>NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>DEPARTMENT</th>
+                                        <th>ROLE</th>
+                                        <th>EDIT</th>
+                                        <th>DELETE</th>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.Users is not null)
+                                    {
+                                        @foreach (var user in Model.Users.Where(x =>x.Role.Name == "User"))
+                                        {
+                                            <!-- Display all users -->
+                                            <tr>
+                                                <td>@user.Name</td>
+                                                <td>@user.Email</td>                                              
+                                                <td>@user.Department?.Name</td>
+                                                <td>@user.Role.Name</td>
+                                                <td>
+                                                    @if (user.Id != Mangement.UserManagement.GetLoggedInUser().Id)
+                                                    {
+                                                        <!-- Modalbutton -->
+                                                        <a asp-route-id="" class="btn btn-sm webcolor editBtn" data-bs-toggle="modal" data-bs-target="#editUserModal-@user.Id" name="modalEditUser">Edit</a>
+                                                        <!-- Modal for editing user -->
+                                                        <div class="modal fade" id="editUserModal-@user.Id" tabindex="-1" role="dialog" aria-labelledby="editUserModal-@user.Id+Label">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header bg-dark text-white">
+                                                                        <h4 class="modal-title fs-5" id="myModalLabel">Edit Employee</h4>
+                                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body text-start">
+                                                                        <form method="post" asp-page-handler="EditUser">
+                                                                            <input asp-for="EditUser.Id" type="hidden" value="@user.Id" />
+                                                                            <div class="mb-3">
+                                                                                <label for="EditUserName" class="form-label">Name</label>
+                                                                                <input asp-for="EditUser.Name" id="EditUserName" value="@user.Name" class="form-control" required minlength="1" />
+                                                                            </div>
+                                                                            <div class="mb-3">
+                                                                                <label for="EditUserEmail" class="form-label">Email</label>
+                                                                                <input asp-for="EditUser.Email" id="EditUserEmail" value="@user.Email" class="form-control" required minlength="1" />
+                                                                            </div>
+                                                                            <input asp-for="EditUser.Password" type="hidden" value="@user.Password" />
+                                                                            <div class="mb-3">
+                                                                                <label for="EditDepartment" class="form-label">Department</label>
+                                                                                <select class="form-select" asp-for="EditUser.DepartmentId">
+                                                                                    @if (Model.Departments is not null)
+                                                                                    {
+                                                                                        @foreach (var department in Model.Departments)
+                                                                                        {
+                                                                                            if (user.DepartmentId == department.Id)
+                                                                                            {
+                                                                                                <option value="@department.Id" selected>@department.Name</option>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <option value="@department.Id">@department.Name</option>
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <div class="mb-3">
+                                                                                <label for="EditUserRole" class="form-label">Role</label>
+                                                                                <select class="form-select" asp-for="EditUser.RoleId">
+                                                                                    @if (Model.Roles is not null)
+                                                                                    {
+                                                                                        @foreach (var role in Model.Roles)
+                                                                                        {
+                                                                                            if (user.RoleId == role.Id)
+                                                                                            {
+                                                                                                <option value="@role.Id" selected>@role.Name</option>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <option value="@role.Id">@role.Name</option>
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                <input type="submit" name="addTask" value="Save" class="btn btn-dark" />
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" title="Du kan inte redigera din information">Ej-redigerbar</a>
+                                                    }
+                                                </td>
+
+                                                <td>
+
+                                                    <!-- Deletebutton and modal for user -->
+                                                    @if (user.Id != Mangement.UserManagement.GetLoggedInUser().Id)
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm deleteBtn" data-bs-toggle="modal" data-bs-target="#deleteUserModal-@user.Id">Delete</button>
+
+                                                        <div class="modal fade" id="deleteUserModal-@user.Id" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" id="deleteUserModalLabel">Bekräfta borttagning</h4>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Är du säker att du vill ta bort
+                                                                    </div>
+                                                                    <form method="post" asp-page-handler="DeleteUser">
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+                                                                            <input type="hidden" name="deleteId" value="@user.Id">
+
+                                                                            <button type="submit" class="btn btn-danger">Bekräfta</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-secondary btn-sm deleteColumn" data-bs-toggle="tooltip" title="Du kan inte redigera din information">Ej-redigerbar</a>
+
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Du kan inte komma åt sidan</h1>
+}
