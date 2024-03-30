@@ -5,7 +5,7 @@
 namespace EmployeeManagement.API.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstInit : Migration
+    public partial class MyFirstInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,6 @@ namespace EmployeeManagement.API.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Time = table.Column<float>(type: "real", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },

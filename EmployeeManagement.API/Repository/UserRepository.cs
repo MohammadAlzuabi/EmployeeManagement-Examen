@@ -33,7 +33,6 @@ namespace EmployeeManagement.API.Repository
             {
                 existingUser.Name = user.Name;
                 existingUser.DepartmentId = user.DepartmentId;
-                existingUser.Time = user.Time;
                 existingUser.Email = user.Email;
                 existingUser.Role = user.Role;
                 _context.Users.Update(existingUser);

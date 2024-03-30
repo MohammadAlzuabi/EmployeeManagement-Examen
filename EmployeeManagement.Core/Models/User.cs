@@ -18,15 +18,10 @@ namespace EmployeeManagement.Core.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-
-        public float? Time { get; set; }
-
-        [Display(Name = "Avdelning ")]
         public int? DepartmentId { get; set; }
         public virtual Department? Department { get; set; }
         public virtual Role? Role { get; set; }
 
-        [DisplayName("Role")]
         public int RoleId { get; set; }
 
         public bool IsAdmin()
