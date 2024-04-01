@@ -1,0 +1,90 @@
+﻿@page
+@using EmployeeManagement.Core.Mangement
+@model EmployeeManagement.Core.Pages.UserModel
+@{
+    var user = UserManagement.GetLoggedInUser();
+}
+<h4>@ViewData["Title"]</h4>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="hidden" asp-for="EditUser.Id" value="@user.Id" />
+                <label asp-for="EditUser.Name"></label>
+                <input asp-for="EditUser.Name" class="form-control" value="@user.Name" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.Email"></label>
+                <input asp-for="EditUser.Email" value="@user.Email" class="form-control" readOnly="readonly" />
+                <input type="hidden" asp-for="EditUser.Email" />
+            </div>
+
+
+            <div class="form-group">
+                <select class="form-select" asp-for="EditUser.DepartmentId" hidden>
+                    @if (Model.Departments is not null)
+                    {
+                        @foreach (var department in Model.Departments)
+                        {
+                            if (user.DepartmentId == department.Id)
+                            {
+                                <option value="@department.Id" selected>@department.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <select class="form-select" asp-for="EditUser.RoleId" hidden>
+                    @if (Model.Roles is not null)
+                    {
+                        @foreach (var role in Model.Roles)
+                        {
+                            if (user.RoleId == role.Id)
+                            {
+                                <option value="@role.Id" selected>@role.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@role.Id">@role.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="EditUser.Password" />
+            </div>
+            <input type="hidden" name="deleteId" value="@user.Id">
+            <button type="submit" value="@user.Id" class="btn btn-primary">Save</button>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="EditUser.ProfileImg" style="width: 100%;"></label>
+                @if (Model.EditUser != null && Model.EditUser.ProfileImg != null)
+                {
+                    <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.EditUser.ProfileImg))">
+                }
+                else
+                {
+                    <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="/img/user-profile-icon.jpg">
+                }
+                <input type="file"
+                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                       asp-for="EditUser.ProfileImg"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="EditUser.ProfileImg" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>

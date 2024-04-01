@@ -41,11 +41,15 @@
                         }
                         <li><i class="fas fa-chart-bar"></i><label>Statistics</label></li>
                         <li><i class="fas fa-cogs"></i><label>Services</label></li>
-                        <li><i class="bi bi-person"></i><label>Profile</label></li>
+                        <li>
+                            <i class="bi bi-person">
+                                <a asp-page="User" asp-route-userId="@user.Id">  <label>Profile</label></a>
+                            </i>
+                            </li>
                         <li>
                             <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
                                 <i class="bi bi-box-arrow-in-left">
-                                    <button type="submit" class="btn btn-light"><label>Logout</label></button>
+                                    <button type="submit" class="btn btn-light">Logout</button>
                                 </i>
                             </form>
                         </li>

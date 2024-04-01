@@ -2,7 +2,7 @@
 @model EmployeeManagement.Core.Pages.AdminModel
 @{
 }
-@if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().RoleId == 1)
+@if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
 {
     <div>
         <div class="row d-flex">

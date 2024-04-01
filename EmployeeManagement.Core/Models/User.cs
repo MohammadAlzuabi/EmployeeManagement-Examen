@@ -22,6 +22,7 @@ namespace EmployeeManagement.Core.Models
         public virtual Department? Department { get; set; }
         public virtual Role? Role { get; set; }
 
+        public byte[]? ProfileImg { get; set; }
         public int RoleId { get; set; }
 
         public bool IsAdmin()
