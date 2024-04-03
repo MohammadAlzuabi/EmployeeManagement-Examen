@@ -1,4 +1,6 @@
-﻿namespace EmployeeManagement.Core.Mangement
+﻿using EmployeeManagement.Core.Models;
+
+namespace EmployeeManagement.Core.Mangement
 {
     public class UserManagement
     {
@@ -7,6 +9,11 @@
         public static void SetLoggedInUser(Models.User user)
         {
             _loggedInUser = user;
+        }
+        public static void UpdateLoggedInUsers(User loggedInUsers)
+        {
+            // Uppdatera den statiska listan med inloggade användare
+            _loggedInUser = loggedInUsers;
         }
         public static Models.User GetLoggedInUser()
         {

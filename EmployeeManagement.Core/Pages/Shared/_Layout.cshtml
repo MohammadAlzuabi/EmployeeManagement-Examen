@@ -33,9 +33,9 @@
 
                         @if (user.IsAdmin())
                         {
-                            <li >
+                            <li>
                                 <i class="bi bi-person">
-                                    <a  asp-area="" asp-page="/Admin"><label>Admin</label></a>
+                                    <a asp-area="" asp-page="/Admin"><label>Admin</label></a>
                                 </i>
                             </li>
                         }
@@ -45,7 +45,7 @@
                             <i class="bi bi-person">
                                 <a asp-page="User" asp-route-userId="@user.Id">  <label>Profile</label></a>
                             </i>
-                            </li>
+                        </li>
                         <li>
                             <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
                                 <i class="bi bi-box-arrow-in-left">
@@ -75,8 +75,22 @@
                             <div></div>
                             <div></div>
                         </div>
+
                     }
-                    <h1>Empolyee Mangamenet</h1> <img src=https://drive.google.com/thumbnail?id=1aPr3-KTa66Bxye3IGajBxbBef4XOoaVv />
+                    <h1>Empolyee Mangamenet</h1>
+                    @if (user != null && user.Id != 0)
+                    {
+
+                        @if (user.ProfileImg != null && user.ProfileImg.Length > 0)
+                        {
+                            <img id="profilePicture" style="width:40px;height:40px; object-fit:cover; border-radius: 50%;" src="data:image/*;base64,@(Convert.ToBase64String(user.ProfileImg))">
+                        }
+                        else
+                        {
+                            <img id="profilePicture" style="width:40px;height:40px; object-fit:cover" src="/img/user-profile-icon.jpg">
+                        }
+                    }
+
                 </header>
                 <div class="content-data">
                     <div class="container">

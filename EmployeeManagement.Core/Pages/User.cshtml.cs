@@ -1,6 +1,7 @@
 using EmployeeManagement.Core.Mangement;
 using EmployeeManagement.Core.Mangment;
 using EmployeeManagement.Core.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -20,7 +21,8 @@ namespace EmployeeManagement.Core.Pages
         }
         [BindProperty]
         public User EditUser { get; set; }
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public List<Department> Departments { get; set; }
         public List<User> Users { get; set; }
         public List<Role> Roles { get; set; }
@@ -32,25 +34,16 @@ namespace EmployeeManagement.Core.Pages
             Departments = await _modelManagement.UpdateListAsync<Department>();
             Roles = await _modelManagement.UpdateListAsync<Role>();
 
+     
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
 
+            await loadIamge();
             var user = UserManagement.GetLoggedInUser();
 
-            var file = Request.Form.Files.FirstOrDefault();
-            if (file != null && file.Length > 0)
-            {
-                // Konvertera filen till en Base64-kodad sträng
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(memoryStream);
-                    var bytes = memoryStream.ToArray();
-                    EditUser.ProfileImg = memoryStream.ToArray();
-                }
-            }
             EditUser.DepartmentId = user.DepartmentId;
             EditUser.RoleId = user.RoleId;
             EditUser.Password = user.Password;
@@ -60,10 +53,31 @@ namespace EmployeeManagement.Core.Pages
                 {
                     EditUser.Email = EditUser.Email.Trim();
                     await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
+
                 }
 
             }
+            UserManagement.UpdateLoggedInUsers(EditUser);
+            StatusMessage = "Your profile has been updated";
             return RedirectToPage();
+        }
+
+        public async Task loadIamge()
+        {
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files.FirstOrDefault();
+                await using (var dataStream = new MemoryStream())
+                {
+                    if (file != null)
+                    {
+                        await file.CopyToAsync(dataStream);
+                        EditUser.ProfileImg = dataStream.ToArray();
+                    }
+
+                }
+            }
+            UserManagement.UpdateLoggedInUsers(EditUser);
         }
     }
 }
