@@ -91,7 +91,7 @@
                                 <tbody>
                                     @if (Model.Users is not null)
                                     {
-                                        @foreach (var user in Model.Users.Where(x =>x.Role.Name == "User"))
+                                        @foreach (var user in Model.Users)
                                         {
                                             <!-- Display all users -->
                                             <tr>

@@ -1,11 +1,9 @@
 using EmployeeManagement.Core.Mangement;
 using EmployeeManagement.Core.Mangment;
 using EmployeeManagement.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using static EmployeeManagement.Core.Enums.Enums;
 
 namespace EmployeeManagement.Core.Pages
 {
@@ -20,17 +18,17 @@ namespace EmployeeManagement.Core.Pages
             _modelManagement = modelManagement;
         }
         [BindProperty]
-        public User EditUser { get; set; }
+        public Models.User EditUser { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
         public List<Department> Departments { get; set; }
-        public List<User> Users { get; set; }
+        public List<Models.User> Users { get; set; }
         public List<Role> Roles { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Users = await _modelManagement.UpdateListAsync<User>();
+            Users = await _modelManagement.UpdateListAsync<Models.User>();
             Departments = await _modelManagement.UpdateListAsync<Department>();
             Roles = await _modelManagement.UpdateListAsync<Role>();
 
