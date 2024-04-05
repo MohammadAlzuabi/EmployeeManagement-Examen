@@ -2,7 +2,7 @@
 @using EmployeeManagement.Core.Mangement
 @model EmployeeManagement.Core.Pages.UserModel
 @{
-    var user = UserManagement.GetLoggedInUser();
+    // var user = UserManagement.GetLoggedInUser();
 }
 <h4>@ViewData["Title"]</h4>
 @if (!string.IsNullOrEmpty(Model.StatusMessage))
@@ -15,14 +15,14 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <input type="hidden" asp-for="EditUser.Id" value="@user.Id" />
+                <input type="hidden" asp-for="EditUser.Id" value="Model.EditUser.Id" />
                 <label asp-for="EditUser.Name"></label>
-                <input asp-for="EditUser.Name" class="form-control" value="@user.Name" />
+                <input asp-for="EditUser.Name" class="form-control" value="@Model.EditUser.Name" />
 
             </div>
             <div class="form-group">
                 <label asp-for="EditUser.Email"></label>
-                <input asp-for="EditUser.Email" value="@user.Email" class="form-control" readOnly="readonly" />
+                <input asp-for="EditUser.Email" value="@Model.EditUser.Email" class="form-control" readOnly="readonly" />
                 <input type="hidden" asp-for="EditUser.Email" />
             </div>
 
@@ -33,7 +33,7 @@
                     {
                         @foreach (var department in Model.Departments)
                         {
-                            if (user.DepartmentId == department.Id)
+                            if (Model.EditUser.DepartmentId == department.Id)
                             {
                                 <option value="@department.Id" selected>@department.Name</option>
                             }
@@ -53,7 +53,7 @@
                     {
                         @foreach (var role in Model.Roles)
                         {
-                            if (user.RoleId == role.Id)
+                            if (Model.EditUser.RoleId == role.Id)
                             {
                                 <option value="@role.Id" selected>@role.Name</option>
                             }
@@ -68,15 +68,15 @@
             <div class="form-group">
                 <input type="hidden" asp-for="EditUser.Password" />
             </div>
-            <input type="hidden" name="deleteId" value="@user.Id">
-            <button type="submit" value="@user.Id" class="btn btn-primary">Save</button>
+            <input type="hidden" name="deleteId" value="@Model.EditUser.Id">
+            <button type="submit" value="@Model.EditUser.Id" class="btn btn-primary">Save</button>
         </div>
         <div class="col-md-6">
             <div class="form-group">
 
-                @if (user.ProfileImg != null && user.ProfileImg.Length > 0)
+                @if (Model.EditUser.ProfileImg != null && Model.EditUser.ProfileImg.Length > 0)
                 {
-                    <img id="profilePicture" style="width:250px;height:250px; object-fit:cover; border: 2px solid black; border-radius: 50%;" src="data:image/*;base64,@(Convert.ToBase64String(user.ProfileImg))">
+                    <img id="profilePicture" style="width:250px;height:250px; object-fit:cover; border: 2px solid black; border-radius: 50%;" src="data:image/*;base64,@(Convert.ToBase64String(Model.EditUser.ProfileImg))">
 
 
                 }

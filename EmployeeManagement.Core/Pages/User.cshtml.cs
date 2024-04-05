@@ -4,6 +4,7 @@ using EmployeeManagement.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using static EmployeeManagement.Core.Enums.Enums;
 
 namespace EmployeeManagement.Core.Pages
 {
@@ -19,6 +20,9 @@ namespace EmployeeManagement.Core.Pages
         }
         [BindProperty]
         public Models.User EditUser { get; set; }
+
+        public int UserId { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
         public List<Department> Departments { get; set; }
@@ -26,38 +30,31 @@ namespace EmployeeManagement.Core.Pages
         public List<Role> Roles { get; set; }
 
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int userId)
         {
-            Users = await _modelManagement.UpdateListAsync<Models.User>();
-            Departments = await _modelManagement.UpdateListAsync<Department>();
+            EditUser = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
             Roles = await _modelManagement.UpdateListAsync<Role>();
-
-     
+            Departments = await _modelManagement.UpdateListAsync<Department>();
+            if (userId != 0)
+            {
+                EditUser.Id = userId;
+            }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int userId)
         {
-
             await loadIamge();
-            var user = UserManagement.GetLoggedInUser();
 
-            EditUser.DepartmentId = user.DepartmentId;
-            EditUser.RoleId = user.RoleId;
-            EditUser.Password = user.Password;
-            if (user != null)
+            var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
+            EditUser.Id = userId;
+            if (EditUser != null && EditUser.Id != 0)
             {
-                if (EditUser != null && EditUser.Id != 0)
-                {
-                    EditUser.Email = EditUser.Email.Trim();
-                    await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
-
-                }
-
+                await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
             }
-            UserManagement.UpdateLoggedInUsers(EditUser);
+
             StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+            return RedirectToPage($"/User", new {userId});
         }
 
         public async Task loadIamge()
@@ -75,7 +72,6 @@ namespace EmployeeManagement.Core.Pages
 
                 }
             }
-            UserManagement.UpdateLoggedInUsers(EditUser);
         }
     }
 }

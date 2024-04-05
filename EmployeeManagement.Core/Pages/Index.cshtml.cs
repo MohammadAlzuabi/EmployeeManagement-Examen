@@ -40,9 +40,9 @@ namespace EmployeeManagement.Core.Pages
                 LoggedInUser = Users.FirstOrDefault(u => u.Email == UserInput.Email);
                 if (LoggedInUser is null)
                     return RedirectToPage();
-                
-                    UserManagement.SetLoggedInUser(LoggedInUser);
-             
+
+                UserManagement.SetLoggedInUser(LoggedInUser);
+
             }
             return RedirectToPage();
         }
