@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class MessageController : Controller
     {
         private readonly MessageRepository _messageRepository;
@@ -20,7 +22,15 @@ namespace EmployeeManagement.API.Controllers
                 return NotFound();
             return Ok(message);
         }
+        [HttpGet("UserId/{userId}")]
+        public async Task<ActionResult<List<Message>>> GetAllById(int userId)
+        {
+           var message = await _messageRepository.GetAllById(userId);
+            if (message is null)
+                return NotFound();
+            return Ok(message);
 
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<Message>> GetOneAsync([FromRoute] int id)
         {

@@ -14,6 +14,9 @@ namespace EmployeeManagement.API.Repository
         public async Task<IEnumerable<Message>> GetAsync() => await _context.Messages.ToListAsync();
 
         public async Task<Message> GetOneAsync(int id) => await _context.Messages.FirstOrDefaultAsync();
+
+        public async Task<List<Message>> GetAllById(int id) => await _context.Messages.Where(m => m.ToUserId == id ).ToListAsync();
+
         public async Task<bool> CreateAsync(Message messages)
         {
             if (messages != null)
@@ -30,12 +33,7 @@ namespace EmployeeManagement.API.Repository
             var existingMeessage = await _context.Messages.FindAsync(id);
             if (existingMeessage != null)
             {
-                existingMeessage.ToUser = messages.ToUser;
-                existingMeessage.FromUser = messages.FromUser;
-                existingMeessage.Content = messages.Content;
-                existingMeessage.SentAt = messages.SentAt;
-                existingMeessage.IsRead = messages.IsRead;
-                _context.Messages.Update(existingMeessage);
+                _context.Entry(messages).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -53,5 +51,8 @@ namespace EmployeeManagement.API.Repository
             }
             return false;
         }
+
+
+
     }
 }

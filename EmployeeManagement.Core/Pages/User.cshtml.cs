@@ -44,10 +44,13 @@ namespace EmployeeManagement.Core.Pages
 
         public async Task<IActionResult> OnPostAsync(int userId)
         {
-            await loadIamge();
+            await UpplodImage();
 
-            var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
-            EditUser.Id = userId;
+            var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}"); ;
+            if (EditUser.ProfileImg == null)
+            {
+                EditUser.ProfileImg = user.ProfileImg;
+            }
             if (EditUser != null && EditUser.Id != 0)
             {
                 await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
@@ -57,7 +60,7 @@ namespace EmployeeManagement.Core.Pages
             return RedirectToPage($"/User", new {userId});
         }
 
-        public async Task loadIamge()
+        private async Task UpplodImage()
         {
             if (Request.Form.Files.Count > 0)
             {
