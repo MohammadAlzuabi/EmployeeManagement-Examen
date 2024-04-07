@@ -8,11 +8,11 @@ namespace EmployeeManagement.Core.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<User?> Users { get; set; }
+        public List<Models.User?> Users { get; set; }
 
         [BindProperty]
-        public User UserInput { get; set; }
-        public User? LoggedInUser { get; set; }
+        public Models.User UserInput { get; set; }
+        public Models.User? LoggedInUser { get; set; }
 
         public bool ErrorMessage { get; set; }
 
@@ -33,16 +33,16 @@ namespace EmployeeManagement.Core.Pages
         {
             if (UserInput.Email != null && UserInput.Password != null)
             {
-                Users = await _modelManagement.UpdateListAsync<User>();
+                Users = await _modelManagement.UpdateListAsync<Models.User>();
                 if (Users is null || !Users.Any())
                     return RedirectToPage();
 
                 LoggedInUser = Users.FirstOrDefault(u => u.Email == UserInput.Email);
                 if (LoggedInUser is null)
                     return RedirectToPage();
-                
-                    UserManagement.SetLoggedInUser(LoggedInUser);
-             
+
+                UserManagement.SetLoggedInUser(LoggedInUser);
+
             }
             return RedirectToPage();
         }

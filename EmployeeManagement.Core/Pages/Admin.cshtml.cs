@@ -9,7 +9,7 @@ namespace EmployeeManagement.Core.Pages
     {
 
         [BindProperty]
-        public List<User> Users { get; set; }
+        public List<Models.User> Users { get; set; }
 
         [BindProperty]
         public List<Role> Roles { get; set; }
@@ -18,10 +18,10 @@ namespace EmployeeManagement.Core.Pages
         public List<Department> Departments { get; set; }
 
         [BindProperty]
-        public User EditUser { get; set; }
+        public Models.User EditUser { get; set; }
 
         [BindProperty]
-        public User NewUser { get; set; }
+        public Models.User NewUser { get; set; }
 
         public string? SearchString { get; set; }
 
@@ -36,22 +36,16 @@ namespace EmployeeManagement.Core.Pages
         public async Task<IActionResult> OnGetAsync(string searchString)
         {
             Roles = await _modelManagement.UpdateListAsync<Role>();
-            Users = await _modelManagement.UpdateListAsync<User>();
+            Users = await _modelManagement.UpdateListAsync<Models.User>();
             Departments = await _modelManagement.UpdateListAsync<Department>();
 
-            //Search User via email
-            if (searchString != null)
-                Users = Users.Where(p =>
-                        p.Email.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
-                        .ToList();
             return Page();
         }
 
         public async Task<IActionResult> OnPostDeleteUser([FromForm] int deleteId)
         {
             if (deleteId != 0)
-                await _httpService.HttpDeleteRequest<User>($"User/{deleteId}");
+                await _httpService.HttpDeleteRequest<Models.User>($"User/{deleteId}");
 
             return RedirectToPage();
         }

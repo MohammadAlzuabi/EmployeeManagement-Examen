@@ -35,6 +35,7 @@ namespace EmployeeManagement.API.Repository
                 existingUser.DepartmentId = user.DepartmentId;
                 existingUser.Email = user.Email;
                 existingUser.Role = user.Role;
+                existingUser.ProfileImg = user.ProfileImg;
                 _context.Users.Update(existingUser);
                 await _context.SaveChangesAsync();
                 return true;

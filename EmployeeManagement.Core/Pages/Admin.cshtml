@@ -2,7 +2,7 @@
 @model EmployeeManagement.Core.Pages.AdminModel
 @{
 }
-@if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().RoleId == 1)
+@if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
 {
     <div>
         <div class="row d-flex">
@@ -16,7 +16,7 @@
                             <h1 class="modal-title fs-5" id="returnMessageLabel">Add new employee</h1>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-start">                    
+                        <div class="modal-body text-start">
                             <form method="post" asp-page-handler="NewUser">
                                 <div class="mb-3">
                                     <label for="NewUserName" class="form-label">Name</label>
@@ -72,11 +72,11 @@
         <!-- List of all users -->
         <div class="container">
             <div class="row ">
-                <div class="col-md-12" >
+                <div class="col-md-12">
                     <div class="card ">
                         <div class="card-body ">
                             <table class="table">
-                                <thead >
+                                <thead>
                                     <tr class="teblecolor">
                                         <th>NAME</th>
                                         <th>EMAIL</th>
@@ -91,12 +91,12 @@
                                 <tbody>
                                     @if (Model.Users is not null)
                                     {
-                                        @foreach (var user in Model.Users.Where(x =>x.Role.Name == "User"))
+                                        @foreach (var user in Model.Users)
                                         {
                                             <!-- Display all users -->
                                             <tr>
                                                 <td>@user.Name</td>
-                                                <td>@user.Email</td>                                              
+                                                <td>@user.Email</td>
                                                 <td>@user.Department?.Name</td>
                                                 <td>@user.Role.Name</td>
                                                 <td>

@@ -20,6 +20,7 @@ namespace EmployeeManagement.API
             builder.Services.AddScoped<DepartmentRepository>();
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<RoleRepository>();
+            builder.Services.AddScoped<MessageRepository>();
 
             // Add services to the container.
             builder.Services.AddControllers();

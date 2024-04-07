@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -22,12 +23,12 @@ namespace EmployeeManagement.Core.Models
         public virtual Department? Department { get; set; }
         public virtual Role? Role { get; set; }
 
+        public byte[]? ProfileImg { get; set; }
         public int RoleId { get; set; }
 
         public bool IsAdmin()
         {
             return Role != null && (Role.Name == "admin" || Role.Name == "Admin");
         }
-
     }
 }

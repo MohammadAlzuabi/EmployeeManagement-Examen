@@ -26,6 +26,15 @@ namespace EmployeeManagement.Core.Mangment
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+
+        public async Task<T?> HttpGetRequestById<T>(string endpoint, T id)
+        {
+            // Construct the request URL by appending the id to the endpoint
+            string requestUri = $"{endpoint}/{id}";
+
+            // Make the GET request using the existing method
+            return await HttpGetRequest<T>(requestUri);
+        }
         public async Task<bool> HttpPostRequest<T>(string requestUri, T entity)
         {
             var jsonString = JsonSerializer.Serialize<T>(entity);
