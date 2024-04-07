@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.API.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240407144538_First")]
-    partial class First
+    [Migration("20240407145427_FirstInit")]
+    partial class FirstInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,11 @@ namespace EmployeeManagement.API.Migrations
 
             modelBuilder.Entity("EmployeeManagement.Core.Models.Message", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()

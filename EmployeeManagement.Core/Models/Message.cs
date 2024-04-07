@@ -4,7 +4,7 @@ namespace EmployeeManagement.Core.Models
 {
     public class Message
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public int ToUserId { get; set; }
         public virtual User? ToUser { get; set; }
