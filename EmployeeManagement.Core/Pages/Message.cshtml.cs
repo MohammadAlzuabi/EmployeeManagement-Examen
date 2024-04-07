@@ -52,7 +52,7 @@ namespace EmployeeManagement.Core.Pages
             SendMessage.SentAt = DateTime.Now;
             SendMessage.ToUserId = CreatedByUser.Id;
             SendMessage.FromUserId = UserId;
-            if (SendMessage.Id != null && SendMessage.FromUserId != 0 && SendMessage.ToUserId != 0 && (SendMessage.Content != null || SendMessage.Content != string.Empty))
+            if (SendMessage.Id != 0 && SendMessage.FromUserId != 0 && SendMessage.ToUserId != 0 && (SendMessage.Content != null || SendMessage.Content != string.Empty))
             {
                 await _httpService.HttpPostRequest($"Message", SendMessage);
                 return RedirectToPage("./Index");
