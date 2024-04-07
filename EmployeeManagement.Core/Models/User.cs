@@ -30,6 +30,5 @@ namespace EmployeeManagement.Core.Models
         {
             return Role != null && (Role.Name == "admin" || Role.Name == "Admin");
         }
-
     }
 }

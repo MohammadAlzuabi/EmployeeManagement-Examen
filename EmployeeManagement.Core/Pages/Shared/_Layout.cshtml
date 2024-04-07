@@ -39,12 +39,19 @@
                                     <a asp-area="" asp-page="/Admin"><label>Admin</label></a>
                                 </i>
                             </li>
+                            <li>
+                                <i class="fas fa-chart-bar">
+                                    <a asp-page="Contact" asp-route-userId="@user.Id"><label>Contact</label></a>
+                                </i>
+
+                            </li>
                         }
+  
                         <li>
                             <i class="fas fa-chart-bar">
-                                <a asp-page="Contact" asp-route-userId="@user.Id"><label>Contact Admin</label></a>
+                                <a asp-page="Message" asp-route-userId="@user.Id"><label>Messeage</label></a>
                             </i>
-                           
+
                         </li>
                         <li><i class="fas fa-cogs"></i><label>Services</label></li>
                         <li>

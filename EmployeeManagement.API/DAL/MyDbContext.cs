@@ -10,7 +10,6 @@ namespace EmployeeManagement.API.DAL
         public DbSet<Role> Roles { get; set; }
         public DbSet<Message> Messages { get; set; }
 
-
     }
 }
 
