@@ -5,12 +5,12 @@
     var user = UserManagement.GetLoggedInUser();
 }
 
-@Model.CreatedByUser.Email
-@if (user != null && Model.CreatedByUser.Id != Model.UserId)
+@Model.SendToUser.Email
+@if (user != null && Model.SendToUser.Id != Model.UserId)
 {
-    <a asp-route-id="" class="border-0 bg-transparent nav-item" type="button" data-bs-toggle="modal" data-bs-target="#addMessageModal" data-bs-toUserId="@Model.CreatedByUser.Id" data-bs-toUsername="@Model.CreatedByUser.Email">
-        <span style="font-size: 1rem; color: rgba(0, 0, 0, .55)">
-            <i class="fas fa-comment-dots ml-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Skicka meddelande till @Model.CreatedByUser.Email"></i>
+    <a asp-route-id="" class="border-0 bg-transparent nav-item" type="button" data-bs-toggle="modal" data-bs-target="#addMessageModal" data-bs-toUserId="@Model.SendToUser.Id" data-bs-toUsername="@Model.SendToUser.Email">
+        <span style="font-size: 1rem; bg-dark text-white">
+            <i class="fas fa-comment-dots ml-2 bg-dark text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Skicka meddelande till @Model.SendToUser.Email"></i>
         </span>
         ✉
     </a>
@@ -18,20 +18,19 @@
 
 
 <!-- Add Message Modal -->
-<!-- Add Message Modal -->
 <div class="modal fade" id="addMessageModal" tabindex="-1" aria-labelledby="addMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form method="post" asp-page-handler="SendMessage">
-                <input type="hidden" asp-for="SendMessage.Id" value="@Model.SendMessage.Id" />
+            <form method="post">
+                <input type="hidden" asp-for="SendMessage.Id" />
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="addMessageModalLabel">Skicka meddelande</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" asp-for="SendMessage.FromUser" value="@Model.UserId" />
-                    <input id="messageToUserId" type="hidden" asp-for="SendMessage.ToUser" />
+                    <input type="hidden" asp-for="SendMessage.FromUserId" value="@Model.UserId" />
+                    <input id="messageToUserId" type="hidden" asp-for="SendMessage.ToUserId" />
                     <div class="mb-3">
                         <label for="messageTitle" class="form-label">Rubrik</label>
                         <input id="messageTitle" class="form-control" type="text" asp-for="SendMessage.Title" placeholder="Rubrik" />
@@ -42,8 +41,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
-                    <button type="submit" class="btn btn-primary">Skicka meddelande</button>
+                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close" />
+                    <input type="submit" name="addTask" value="Skicka meddelande" class="btn btn-dark" />
                 </div>
             </form>
         </div>

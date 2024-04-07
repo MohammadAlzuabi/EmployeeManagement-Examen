@@ -17,6 +17,7 @@ namespace EmployeeManagement.Core.Pages.UserManagment
 
         public List<Message> Messages { get; set; }
 
+        public User FromUser { get; set; }
         public ContactModel(ModelManagement modelManagement, HttpService httpService)
         {
             _modelManagement = modelManagement;
@@ -25,6 +26,7 @@ namespace EmployeeManagement.Core.Pages.UserManagment
 
         public async Task<IActionResult> OnGetAsync(int userId)
         {
+            FromUser = await _httpService.HttpGetRequest<Models.User>($"User/{2}");
             var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}"); ;
             if (user == null) return NotFound();
 
@@ -35,12 +37,17 @@ namespace EmployeeManagement.Core.Pages.UserManagment
 
         public async Task<IActionResult> OnPostReplyMessage()
         {
+            FromUser = await _httpService.HttpGetRequest<Models.User>($"User/{2}");
+            if(FromUser != null)
+            {
+                ReplyMessage.FromUserId = FromUser.Id;
+            }
 
             ReplyMessage.SentAt = DateTime.Now;
             if (ModelState.IsValid || ReplyMessage != null)
             {
                 await _httpService.HttpPostRequest($"Message", ReplyMessage);
-                return RedirectToPage(new { userId = ReplyMessage.FromUser });
+                return RedirectToPage(new { userId = ReplyMessage.FromUserId });
 
             }
 
