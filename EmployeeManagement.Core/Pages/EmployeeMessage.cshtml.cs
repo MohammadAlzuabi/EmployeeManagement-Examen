@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EmployeeManagement.Core.Pages
 {
-    public class MessageModel : PageModel
+    public class EmployeeMessageModel : PageModel
     {
         private readonly HttpService _httpService;
         private readonly ModelManagement _modelManagement;
@@ -18,9 +18,10 @@ namespace EmployeeManagement.Core.Pages
         [BindProperty]
         public Models.Message SendMessage { get; set; }
         public int UserId { get; set; }
+        [BindProperty]
         public User SendToUser { get; set; }
 
-        public MessageModel(HttpService httpService, ModelManagement modelManagement)
+        public EmployeeMessageModel(HttpService httpService, ModelManagement modelManagement)
         {
             _httpService = httpService;
             _modelManagement = modelManagement;
@@ -46,7 +47,7 @@ namespace EmployeeManagement.Core.Pages
             if (SendMessage.FromUserId != 0 && SendMessage.ToUserId != 0 && (SendMessage.Content != null || SendMessage.Content != string.Empty))
             {
                 await _httpService.HttpPostRequest($"Message", SendMessage);
-                return RedirectToPage("./Message");
+                return RedirectToPage("./EmployeeMessage");
 
             }
             StatusMessage = "Failed to send message!";
@@ -58,7 +59,7 @@ namespace EmployeeManagement.Core.Pages
         private async Task SetUserData(int userId)
         {
             var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
-            SendToUser = await _httpService.HttpGetRequest<Models.User>($"User/{1}"); // TODO: send to admin 
+            SendToUser = await _httpService.HttpGetRequest<Models.User>($"User/rolename/admin");  
 
             if (userId != 0)
             {
