@@ -35,7 +35,7 @@
                         @if (user.IsAdmin())
                         {
                             <li>
-                                <i class="bi bi-person">
+                                <i class="bi bi-person-fill-gear">
                                     <a asp-area="" asp-page="/Admin"><label>Admin</label></a>
                                 </i>
                             </li>
@@ -45,7 +45,7 @@
                         else
                         {
                             <li>
-                                <i class="fas fa-chart-bar">
+                                <i class="bi bi-chat-square-text-fill">
                                     <a asp-page="EmployeeMessage" asp-route-userId="@user.Id"><label>Kontakt Admin</label></a>
                                 </i>
 
@@ -53,7 +53,7 @@
 
                         }
                         <li>
-                            <i class="fas fa-chart-bar">
+                            <i class="bi bi-inbox">
                                 <a asp-page="Inbox" asp-route-userId="@user.Id"><label>Inkorg</label></a>
                             </i>
 
@@ -66,7 +66,7 @@
                         <li>
                             <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
                                 <i class="bi bi-box-arrow-in-left">
-                                    <button type="submit" class="btn btn-light">Logout</button>
+                                    <button type="submit" class="btn btn-transparent  text-primary">Logout</button>
                                 </i>
                             </form>
                         </li>

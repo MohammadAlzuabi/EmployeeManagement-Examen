@@ -47,27 +47,28 @@
                                         <input type="hidden" asp-for="Message.ToUserId" value="@message.CurrentUser.Id" />
                                         <input type="hidden" asp-for="Message.IsRead" value="@true" />
                                         <button class="accordion-button" type="submit" data-bs-toggle="collapse" data-bs-target="@collapseId" aria-expanded="false" aria-controls="@collapse">
-                                            <span class="text-left">
+                                            <div class="d-flex align-items-center">
                                                 @if (@message.FromUser != null && @message.FromUser.ProfileImg != null)
                                                 {
-                                                    <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 30px" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image">
+                                                    <img class="rounded-circle me-2" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image" style="width: 40px; height: 40px; object-fit: cover;">
                                                 }
                                                 else
                                                 {
-                                                    <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 30px" src="/img/user-profile-icon.jpg" alt="User image">
+                                                    <img class="rounded-circle me-2" src="/img/user-profile-icon.jpg" alt="User image" style="width: 40px; height: 40px; object-fit: cover;">
                                                 }
-                                                @if (@message.FromUser != null)
-                                                {
-                                                    <strong>Meddelande från @message.FromUser.Email Skickades @message.SentAt</strong>
-                                                }
-
+                                                <div>
+                                                    <p class="mb-0 fw-bold">@message.FromUser.Email</p>
+                                                    <small class="text-muted">@message.SentAt.ToShortDateString()</small>
+                                                </div>
+                                            </div>
                                         </button>
                                     </form>
                                 }
                             </h2>
                             <div id="@collapse" class="accordion-collapse collapse show" aria-labelledby="@heading" data-bs-parent="#accordionInboxMessages">
                                 <div class="accordion-body">
-                                    <textarea class="bg-transparent border-0 w-100" style="height: 100%" readonly>@message.Content</textarea>
+                                    <h5 class="message-title fw-bold mb-3">@message.Title</h5>
+                                    <textarea class="message-content form-control bg-transparent border-0" style="height: 100%;" readonly>@message.Content</textarea>
                                 </div>
                                 <div class="row justify-content-end">
                                     <div class="col-2">
