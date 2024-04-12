@@ -13,7 +13,7 @@ namespace EmployeeManagement.Core.Pages.UserManagment
         private readonly UserManager<User> _userManager;
 
         [BindProperty]
-        public Message ReplyMessage { get; set; }
+        public Message Message { get; set; }
 
         //public List<Message> Messages { get; set; }
 
@@ -67,6 +67,16 @@ namespace EmployeeManagement.Core.Pages.UserManagment
                 return Page();
         }
 
+        public async Task<IActionResult> OnPostReadMessage()
+        {
+            if (Message.Id != null && Message.FromUserId != null && Message.ToUserId != null && Message.Content != null && Message.IsRead)
+            {
+                await _httpService.HttpUpdateRequest($"Message/{ Message.Id}", Message);
+                return base.RedirectToPage(new { userId =Message.ToUserId });
+            }
+
+            return BadRequest();
+        }
         public async Task<IActionResult> OnPostAsync(int userId)
         {
             User = await GetUserById(userId);
@@ -74,14 +84,14 @@ namespace EmployeeManagement.Core.Pages.UserManagment
             var roleUser = await GetUserByRoleName(roleName, userId);
             if (roleUser != null)
             {
-                ReplyMessage.FromUserId = roleUser.Id;
+                Message.FromUserId = roleUser.Id;
             }
 
-            ReplyMessage.SentAt = DateTime.Now;
-            if (ModelState.IsValid || ReplyMessage != null)
+            Message.SentAt = DateTime.Now;
+            if (ModelState.IsValid || Message != null)
             {
-                await _httpService.HttpPostRequest($"Message", ReplyMessage);
-                return RedirectToPage(new { userId = ReplyMessage.FromUserId });
+                await _httpService.HttpPostRequest($"Message", Message);
+                return RedirectToPage(new { userId = Message.FromUserId });
 
             }
 
