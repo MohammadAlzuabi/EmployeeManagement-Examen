@@ -8,12 +8,12 @@ using static EmployeeManagement.Core.Enums.Enums;
 
 namespace EmployeeManagement.Core.Pages
 {
-    public class UserModel : PageModel
+    public class UserProfileModel : PageModel
     {
         private readonly HttpService _httpService;
         private readonly ModelManagement _modelManagement;
 
-        public UserModel(HttpService httpService, ModelManagement modelManagement)
+        public UserProfileModel(HttpService httpService, ModelManagement modelManagement)
         {
             _httpService = httpService;
             _modelManagement = modelManagement;
