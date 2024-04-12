@@ -44,13 +44,18 @@ namespace EmployeeManagement.Core.Pages
             SendMessage.SentAt = DateTime.Now;
             SendMessage.ToUserId = SendToUser.Id;
             SendMessage.FromUserId = UserId;
-            if (SendMessage.FromUserId != 0 && SendMessage.ToUserId != 0 && (SendMessage.Content != null || SendMessage.Content != string.Empty))
+            if (SendMessage.FromUserId != 0 && SendMessage.ToUserId != 0 && !string.IsNullOrEmpty(SendMessage.Content) && !string.IsNullOrEmpty(SendMessage.Title))
             {
                 await _httpService.HttpPostRequest($"Message", SendMessage);
+                StatusMessage = "Ditt meddelande har skickats till Administratören!";
                 return RedirectToPage("./EmployeeMessage");
 
             }
-            StatusMessage = "Failed to send message!";
+            else
+            {
+                StatusMessage = "Det gick inte att skicka meddelandet!";
+            }
+
             return Page();
         }
 

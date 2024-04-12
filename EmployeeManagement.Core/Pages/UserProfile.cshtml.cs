@@ -46,7 +46,7 @@ namespace EmployeeManagement.Core.Pages
         {
             await UpplodImage();
 
-            var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}"); ;
+            var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
             if (EditUser.ProfileImg == null)
             {
                 EditUser.ProfileImg = user.ProfileImg;
@@ -54,10 +54,14 @@ namespace EmployeeManagement.Core.Pages
             if (EditUser != null && EditUser.Id != 0)
             {
                 await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
+                StatusMessage = "Din profil har uppdaterats";
+            }
+            else
+            {
+                StatusMessage = "Det uppstod ett fel vid uppdatering av din profil";
             }
 
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage($"/User", new {userId});
+            return RedirectToPage($"/UserProfile", new { userId });
         }
 
         private async Task UpplodImage()

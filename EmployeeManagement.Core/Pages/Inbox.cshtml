@@ -97,9 +97,9 @@
 <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" >
-                <div class="modal-header">
-                    <h5 class="modal-title" id="replyMessageModalLabel">Skicka meddelande</h5>
+            <form method="post">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fs-5" id="replyMessageModalLabel">Skicka meddelande</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body justify-content-center">
@@ -116,7 +116,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
-                    <button type="submit" class="btn btn-primary">Skicka meddelande</button>
+                    <button type="submit" class="btn btn-dark">Skicka meddelande</button>
                 </div>
             </form>
         </div>
@@ -144,3 +144,11 @@
             modalTitle.textContent = 'Skicka meddelande till ' + messageToUsername;
         });
 </script>
+<style>
+    .modal-title-custom-bg {
+        background-color: #333; /* Ändra till önskad bakgrundsfärg */
+        color: #fff; /* Ändra till önskad textfärg */
+        padding: 10px; /* Justera kuddar efter behov */
+        border-radius: 5px; /* Justera bågfil efter behov */
+    }
+</style>

@@ -4,10 +4,10 @@
 @{
     // var user = UserManagement.GetLoggedInUser();
 }
-<h4>@ViewData["Title"]</h4>
+
 @if (!string.IsNullOrEmpty(Model.StatusMessage))
 {
-    <div class="alert alert-success" role="alert">
+    <div class="alert @((Model.StatusMessage.Contains("uppdaterats")) ? "alert-success" : "alert-danger")" role="alert">
         @Model.StatusMessage
     </div>
 }

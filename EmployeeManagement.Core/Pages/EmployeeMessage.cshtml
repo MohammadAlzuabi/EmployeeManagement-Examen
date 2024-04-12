@@ -5,67 +5,39 @@
     var user = UserManagement.GetLoggedInUser();
 }
 
-@Model.SendToUser.Email
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert @((Model.StatusMessage.Contains("skickats")) ? "alert-success" : "alert-danger")" role="alert">
+        @Model.StatusMessage
+    </div>
+}
 @if (user != null && Model.SendToUser.Id != Model.UserId)
 {
-    <a asp-route-id="" class="border-0 bg-transparent nav-item" type="button" data-bs-toggle="modal" data-bs-target="#addMessageModal" data-bs-toUserId="@Model.SendToUser.Id" data-bs-toUsername="@Model.SendToUser.Email">
-        <span style="font-size: 1rem; bg-dark text-white">
-            <i class="fas fa-comment-dots ml-2 bg-dark text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Skicka meddelande till @Model.SendToUser.Email"></i>
-        </span>
-        ✉
-    </a>
+    <div id="messageForm">
+        <form method="post">
+            <input type="hidden" asp-for="SendMessage.Id" />
+            <input type="hidden" asp-for="SendMessage.FromUserId" value="@Model.UserId" />
+            <input type="hidden" id="messageToUserId" asp-for="SendMessage.ToUserId" value="@Model.SendToUser.Id" />
+
+            <div class="mb-3">
+                <label for="messageTitle" class="form-label">Rubrik</label>
+                <input id="messageTitle" class="form-control" type="text" asp-for="SendMessage.Title" placeholder="Rubrik" />
+            </div>
+            <div class="mb-3">
+                <label for="messageContent" class="form-label">Meddelande</label>
+                <textarea id="messageContent" class="form-control" asp-for="SendMessage.Content" placeholder="Meddelande"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" name="addTask" value="Skicka meddelande" class="btn btn-dark" />
+            </div>
+        </form>
+    </div>
 }
 
-
-<!-- Add Message Modal -->
-<div class="modal fade" id="addMessageModal" tabindex="-1" aria-labelledby="addMessageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form method="post">
-                <input type="hidden" asp-for="SendMessage.Id" />
-
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addMessageModalLabel">Skicka meddelande</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" asp-for="SendMessage.FromUserId" value="@Model.UserId" />
-                    <input id="messageToUserId" type="hidden" asp-for="SendMessage.ToUserId" />
-                    <div class="mb-3">
-                        <label for="messageTitle" class="form-label">Rubrik</label>
-                        <input id="messageTitle" class="form-control" type="text" asp-for="SendMessage.Title" placeholder="Rubrik" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="messageContent" class="form-label">Meddelande</label>
-                        <textarea id="messageContent" class="form-control" asp-for="SendMessage.Content" placeholder="Meddelande"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close" />
-                    <input type="submit" name="addTask" value="Skicka meddelande" class="btn btn-dark" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
 <script>
-
-
-    var addMessageModal = document.getElementById('addMessageModal');
-    addMessageModal.addEventListener('show.bs.modal',
-        function (event) {
-            var button = event.relatedTarget;
-            // Attributes
-            var messageToUserId = button.getAttribute('data-bs-toUserId');
-            var messageToUsername = button.getAttribute('data-bs-toUsername');
-            // Fields
-            var toUserIdInput = addMessageModal.querySelector('#messageToUserId');
-            var modalTitle = addMessageModal.querySelector('.modal-title');
-            // Apply
-            toUserIdInput.value = messageToUserId;
-            modalTitle.textContent = 'Skicka meddelande till ' + messageToUsername;
-        });
+    document.getElementById('messageTitle').focus();
+    var sendToUserId = document.getElementById('messageToUserId').value;
+    var messageToUserId = document.getElementById('messageToUserId');
+    messageToUserId.value = sendToUserId;
 </script>
