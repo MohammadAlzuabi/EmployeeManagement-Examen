@@ -33,6 +33,24 @@ namespace EmployeeManagement.API.Controllers
                 return NotFound();
             return Ok(user);
         }
+
+        [HttpGet("rolename/{roleName}")]
+        public async Task<ActionResult> GetUserByRoleUser([FromRoute] string roleName)
+        {
+            var user = await _userRepository.GetUserByRoleAdmin(roleName);
+            if (user is null)
+                return NotFound();
+            return Ok(user);
+        }
+
+        [HttpGet("roleName/{roleName}/userId/{userId}")]
+        public async Task<ActionResult<User>> GetUserByRoleAdmin([FromRoute] string roleName , int userId)
+        {
+            var user = await _userRepository.GetUserByRole(roleName,userId);
+            if (user is null)
+                return NotFound();
+            return Ok(user);
+        }
         [HttpPost]
         public async Task<ActionResult> PostAsync([FromBody] User user)
         {
