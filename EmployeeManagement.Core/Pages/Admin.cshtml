@@ -6,8 +6,8 @@
 {
     <div>
         <div class="row d-flex">
-            <div class=" col7 p-0 my-3 d-flex justify-content-start">
-                <a asp-route-id="" class="btn webcolor mb-3 text-white" data-bs-toggle="modal" data-bs-target="#modalCreateNewUser" name="modalCreateNewUser">Lägg till</a>
+            <div class="col-6 p-0 my-3 d-flex justify-content-start">
+                <a asp-route-id="" class="btn webcolor  text-white" data-bs-toggle="modal" data-bs-target="#modalCreateNewUser" name="modalCreateNewUser">Lägg till</a>
             </div>
             <div class="modal fade" id="modalCreateNewUser" tabindex="-1" aria-labelledby="modalCreateNewUserLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -67,8 +67,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-6 p-0 my-3 d-flex justify-content-end">
+                <form method="get" asp-page="/Admin">
+                    <div class="d-flex">
+                        <input type="text" class="bg-light rounded-3 mx-1 px-1" name="searchString" placeholder="Sök anställd..." />
+                        <button class="btn webcolor" type="submit">Söka</button>
+                    </div>
+                </form>
 
+            </div>
         </div>
+
         <!-- List of all users -->
         <div class="container">
             <div class="row ">
