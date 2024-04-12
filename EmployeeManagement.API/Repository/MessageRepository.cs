@@ -28,12 +28,20 @@ namespace EmployeeManagement.API.Repository
             return false;
         }
 
-        public async Task<bool> UpdatetAsync(int id, Message messages)
+        public async Task<bool> UpdatetAsync(int id, Message message)
         {
-            var existingMeessage = await _context.Messages.FindAsync(id);
-            if (existingMeessage != null)
+            var existingMessage = await _context.Messages.FindAsync(id);
+            if (existingMessage != null)
             {
-                _context.Entry(messages).State = EntityState.Modified;
+                existingMessage.Id = message.Id;
+                existingMessage.Title = message.Title;
+                existingMessage.Content = message.Content;
+                existingMessage.ToUserId = message.ToUserId;
+                existingMessage.FromUserId = message.FromUserId;
+                existingMessage.SentAt = message.SentAt;
+                existingMessage.IsRead = message.IsRead;
+
+                _context.Messages.Update(existingMessage);
                 await _context.SaveChangesAsync();
                 return true;
             }
