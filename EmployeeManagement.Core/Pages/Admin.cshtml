@@ -7,31 +7,31 @@
     <div>
         <div class="row d-flex">
             <div class=" col7 p-0 my-3 d-flex justify-content-start">
-                <a asp-route-id="" class="btn webcolor mb-3 text-white" data-bs-toggle="modal" data-bs-target="#modalCreateNewUser" name="modalCreateNewUser">Add Employee</a>
+                <a asp-route-id="" class="btn webcolor mb-3 text-white" data-bs-toggle="modal" data-bs-target="#modalCreateNewUser" name="modalCreateNewUser">Lägg till</a>
             </div>
             <div class="modal fade" id="modalCreateNewUser" tabindex="-1" aria-labelledby="modalCreateNewUserLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header bg-dark text-white">
-                            <h1 class="modal-title fs-5" id="returnMessageLabel">Add new employee</h1>
+                            <h1 class="modal-title fs-5" id="returnMessageLabel">Lägg till ny asntälld</h1>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-start">
                             <form method="post" asp-page-handler="NewUser">
                                 <div class="mb-3">
-                                    <label for="NewUserName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="NewUserName" name="NewUser.Name" required minlength="1" placeholder="Enter Employee Name">
+                                    <label for="NewUserName" class="form-label">Namn</label>
+                                    <input type="text" class="form-control" id="NewUserName" name="NewUser.Name" required minlength="1" placeholder="Ange anställdas namn">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="NewUserEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="NewUserEmail" name="NewUser.Email" required minlength="1" placeholder="Enter Employee Email">
+                                    <label for="NewUserEmail" class="form-label">E-Post</label>
+                                    <input type="email" class="form-control" id="NewUserEmail" name="NewUser.Email" required minlength="1" placeholder="Ange anställdas e-post">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="NewUserPassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="NewUserPassword" name="NewUser.Password" required minlength="1" placeholder="Enter Employee Password">
+                                    <label for="NewUserPassword" class="form-label">Lösenord</label>
+                                    <input type="password" class="form-control" id="NewUserPassword" name="NewUser.Password" required minlength="1" placeholder="Ange anställdas lösenord">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="NewUserDepartment" class="form-label">Department</label>
+                                    <label for="NewUserDepartment" class="form-label">Avdelning</label>
                                     <select class="form-select" asp-for="NewUser.Department">
                                         @if (Model.Departments is not null)
                                         {
@@ -59,8 +59,8 @@
                                     </select>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close" />
-                                    <input type="submit" name="addTask" value="Add" class="btn btn-dark" />
+                                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Avbryt" />
+                                    <input type="submit" name="addTask" value="Lägg till" class="btn btn-dark" />
                                 </div>
                             </form>
                         </div>
@@ -78,12 +78,12 @@
                             <table class="table">
                                 <thead>
                                     <tr class="teblecolor">
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>DEPARTMENT</th>
-                                        <th>ROLE</th>
-                                        <th>EDIT</th>
-                                        <th>DELETE</th>
+                                        <th>NAMN</th>
+                                        <th>E-POST</th>
+                                        <th>AVDELNING</th>
+                                        <th>ROLL</th>
+                                        <th>REDIGERA</th>
+                                        <th>TA-BORT</th>
 
                                     </tr>
 
@@ -100,16 +100,14 @@
                                                 <td>@user.Department?.Name</td>
                                                 <td>@user.Role.Name</td>
                                                 <td>
-                                                    @if (user.Id != Mangement.UserManagement.GetLoggedInUser().Id)
-                                                    {
-                                                        <!-- Modalbutton -->
-                                                        <a asp-route-id="" class="btn btn-sm webcolor editBtn" data-bs-toggle="modal" data-bs-target="#editUserModal-@user.Id" name="modalEditUser">Edit</a>
+                                                   <!-- Modalbutton -->
+                                                        <a asp-route-id="" class="btn btn-sm webcolor editBtn" data-bs-toggle="modal" data-bs-target="#editUserModal-@user.Id" name="modalEditUser">Redigera</a>
                                                         <!-- Modal for editing user -->
                                                         <div class="modal fade" id="editUserModal-@user.Id" tabindex="-1" role="dialog" aria-labelledby="editUserModal-@user.Id+Label">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header bg-dark text-white">
-                                                                        <h4 class="modal-title fs-5" id="myModalLabel">Edit Employee</h4>
+                                                                        <h4 class="modal-title fs-5" id="myModalLabel">Redigera Anställd</h4>
                                                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body text-start">
@@ -120,12 +118,12 @@
                                                                                 <input asp-for="EditUser.Name" id="EditUserName" value="@user.Name" class="form-control" required minlength="1" />
                                                                             </div>
                                                                             <div class="mb-3">
-                                                                                <label for="EditUserEmail" class="form-label">Email</label>
+                                                                                <label for="EditUserEmail" class="form-label">E-post</label>
                                                                                 <input asp-for="EditUser.Email" id="EditUserEmail" value="@user.Email" class="form-control" required minlength="1" />
                                                                             </div>
                                                                             <input asp-for="EditUser.Password" type="hidden" value="@user.Password" />
                                                                             <div class="mb-3">
-                                                                                <label for="EditDepartment" class="form-label">Department</label>
+                                                                                <label for="EditDepartment" class="form-label">Avdelning</label>
                                                                                 <select class="form-select" asp-for="EditUser.DepartmentId">
                                                                                     @if (Model.Departments is not null)
                                                                                     {
@@ -145,7 +143,7 @@
                                                                             </div>
 
                                                                             <div class="mb-3">
-                                                                                <label for="EditUserRole" class="form-label">Role</label>
+                                                                                <label for="EditUserRole" class="form-label">Roll</label>
                                                                                 <select class="form-select" asp-for="EditUser.RoleId">
                                                                                     @if (Model.Roles is not null)
                                                                                     {
@@ -164,19 +162,16 @@
                                                                                 </select>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                                <input type="submit" name="addTask" value="Save" class="btn btn-dark" />
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                                                                                <input type="submit" name="addTask" value="Spara" class="btn btn-dark" />
                                                                             </div>
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" title="Du kan inte redigera din information">Ej-redigerbar</a>
-                                                    }
+                                                    
+                                        
                                                 </td>
 
                                                 <td>
@@ -184,7 +179,7 @@
                                                     <!-- Deletebutton and modal for user -->
                                                     @if (user.Id != Mangement.UserManagement.GetLoggedInUser().Id)
                                                     {
-                                                        <button type="button" class="btn btn-danger btn-sm deleteBtn" data-bs-toggle="modal" data-bs-target="#deleteUserModal-@user.Id">Delete</button>
+                                                        <button type="button" class="btn btn-danger btn-sm deleteBtn" data-bs-toggle="modal" data-bs-target="#deleteUserModal-@user.Id">Ta bort</button>
 
                                                         <div class="modal fade" id="deleteUserModal-@user.Id" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
