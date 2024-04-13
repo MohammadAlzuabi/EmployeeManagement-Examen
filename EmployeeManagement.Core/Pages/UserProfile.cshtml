@@ -16,12 +16,12 @@
         <div class="col-md-6">
             <div class="form-group">
                 <input type="hidden" asp-for="EditUser.Id" value="@Model.EditUser.Id" />
-                <label asp-for="EditUser.Name"></label>
+                <label>Namn</label>
                 <input asp-for="EditUser.Name" class="form-control" value="@Model.EditUser.Name" />
 
             </div>
             <div class="form-group">
-                <label asp-for="EditUser.Email"></label>
+                <label>E-post</label>
                 <input asp-for="EditUser.Email" value="@Model.EditUser.Email" class="form-control" readOnly="readonly" />
                 <input type="hidden" asp-for="EditUser.Email" />
             </div>
@@ -69,28 +69,27 @@
                 <input type="hidden" asp-for="EditUser.Password" />
             </div>
             <input type="hidden" name="deleteId" value="@Model.EditUser.Id">
-            <button type="submit" value="@Model.EditUser.Id" class="btn btn-primary">Save</button>
+            <button type="submit" value="@Model.EditUser.Id" class="btn btn-dark">Spara</button>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-
-                @if (Model.EditUser.ProfileImg != null && Model.EditUser.ProfileImg.Length > 0)
-                {
-                    <img id="profilePicture" style="width:250px;height:250px; object-fit:cover; border: 2px solid black; border-radius: 50%;" src="data:image/*;base64,@(Convert.ToBase64String(Model.EditUser.ProfileImg))">
-
-
-                }
-                else
-                {
-                    <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="/img/user-profile-icon.jpg">
-                }
-                <input type="file"
-                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                       asp-for="EditUser.ProfileImg"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
-                <span asp-validation-for="EditUser.ProfileImg" class="text-danger"></span>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @if (Model.EditUser.ProfileImg != null)
+                    {
+                        <img id="profilePicture" style="width:250px;height:250px; object-fit:cover; border: 2px solid black; border-radius: 50%;" src="data:image/*;base64,@(Convert.ToBase64String(Model.EditUser.ProfileImg))">
+                    }
+                    else
+                    {
+                        <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="/img/user-profile-icon.jpg">
+                    }
+                    <input type="file"
+                           accept=".png,.jpg,.jpeg,.gif,.tif"
+                           asp-for="EditUser.ProfileImg"
+                           class="form-control"
+                           style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                           onchange="loadImage(event)" />
+                    <span asp-validation-for="EditUser.ProfileImg" class="text-danger"></span>
+                </div>
             </div>
         </div>
     </div>

@@ -36,7 +36,7 @@
                         {
                             <li>
                                 <i class="bi bi-person-fill-gear">
-                                    <a asp-area="" asp-page="/Admin"><label>Admin</label></a>
+                                    <a asp-area="" asp-page="/Admin"><label class="text-white">Admin</label></a>
                                 </i>
                             </li>
               
@@ -46,7 +46,7 @@
                         {
                             <li>
                                 <i class="bi bi-chat-square-text-fill">
-                                    <a asp-page="EmployeeMessage" asp-route-userId="@user.Id"><label>Kontakt Admin</label></a>
+                                    <a asp-page="EmployeeMessage" asp-route-userId="@user.Id"><label class="text-white">Kontakt Admin</label></a>
                                 </i>
 
                             </li>
@@ -54,19 +54,19 @@
                         }
                         <li>
                             <i class="bi bi-inbox">
-                                <a asp-page="Inbox" asp-route-userId="@user.Id"><label>Inkorg</label></a>
+                                <a asp-page="Inbox" asp-route-userId="@user.Id"><label class="text-white">Inkorg</label></a>
                             </i>
 
                         </li>
                         <li>
                             <i class="bi bi-person">
-                                <a asp-page="UserProfile" asp-route-userId="@user.Id">  <label>Profile</label></a>
+                                <a asp-page="UserProfile" asp-route-userId="@user.Id">  <label class="text-white">Profile</label></a>
                             </i>
                         </li>
                         <li>
                             <form method="post" asp-page="/Index" asp-page-handler="LogoutUser">
                                 <i class="bi bi-box-arrow-in-left">
-                                    <button type="submit" class="btn btn-transparent  text-primary">Logout</button>
+                                    <a href="#" onclick="this.closest('form').submit()"><label class="text-white">Logout</label></a>
                                 </i>
                             </form>
                         </li>
