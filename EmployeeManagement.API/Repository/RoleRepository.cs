@@ -29,7 +29,7 @@ namespace EmployeeManagement.API.Repository
             return false;
         }
 
-        public async Task<bool> UpdatetAsync(int id, Role role)
+        public async Task<bool> UpdateAsync(int id, Role role)
         {
             var existingRole = await _context.Roles.FindAsync(id);
             if (existingRole != null)
