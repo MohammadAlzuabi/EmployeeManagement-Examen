@@ -65,7 +65,7 @@ namespace EmployeeManagement.Core.Pages
                     return Page();
                 }
             }
-            return RedirectToPage();
+            return RedirectToPage("/HomePage");
         }
 
         public IActionResult OnPostLogoutUser()
