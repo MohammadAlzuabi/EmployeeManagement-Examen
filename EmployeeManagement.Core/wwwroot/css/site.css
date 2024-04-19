@@ -140,6 +140,7 @@ li label.hideMenuList {
 .content {
     width: 100%;
     height: 100vh;
+    background-color:aliceblue;
 }
 
 header {
@@ -205,6 +206,7 @@ header h1 {
     padding: 20px;
     height: 84%;
     overflow-y: auto;
+    background-color: aliceblue;
 }
 
 .sideBar.showMenu {

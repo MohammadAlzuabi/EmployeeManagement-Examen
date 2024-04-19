@@ -5,16 +5,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EmployeeManagement.Core.Pages
 {
-    public class PsotPageModel : PageModel
+    public class HomePageModel : PageModel
     {
         private readonly HttpService _httpService;
         private readonly ModelManagement _modelManagement;
 
         [BindProperty]
         public Post Post { get; set; }
-        public int UserId { get; set; }
 
-        public List<CustomPostModel> Posts { get; set; }
+
+        public int CreatedByUser { get; set; }
+
+        public List<Post> Posts { get; set; }
+
+
 
         public class CustomPostModel
         {
@@ -25,14 +29,14 @@ namespace EmployeeManagement.Core.Pages
             public DateTime CreatedAt { get; set; }
         }
 
-        public PsotPageModel(HttpService httpService, ModelManagement modelManagement)
+        public HomePageModel(HttpService httpService, ModelManagement modelManagement)
         {
             _httpService = httpService;
             _modelManagement = modelManagement;
         }
         public async Task<IActionResult> OnGetAsync(int postId,int userId)
         {
-            //Post = await _httpService.HttpGetRequestById(postId, userId);
+            Posts = await _modelManagement.UpdateListAsync<Models.Post>();
             return Page();
         }
     }
