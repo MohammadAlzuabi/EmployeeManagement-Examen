@@ -1,26 +1,27 @@
 ﻿using EmployeeManagement.API.Repository;
 using EmployeeManagement.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace EmployeeManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoleController : ControllerBase
+    public class PostController : ControllerBase
     {
-        private readonly RoleRepository _roleRepository;
-        public RoleController(RoleRepository roleRepository)
-        {
-            _roleRepository = roleRepository;
-        }
+        private readonly PostRepository _postRepository;
 
+        public PostController(PostRepository postRepository)
+        {
+            _postRepository = postRepository;
+        }
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {
-            var role = await _roleRepository.GetAsync();
-            if (role is null)
+            var post = await _postRepository.GetAsync();
+            if (post is null)
                 return NotFound();
-            return Ok(role);
+            return Ok(post);
         }
 
         //[HttpGet("{id}")]
@@ -34,32 +35,32 @@ namespace EmployeeManagement.API.Controllers
 
         [HttpGet("{name}")]
 
-        public async Task<ActionResult> GetByNameAsync([FromRoute] string name)
+        public async Task<ActionResult> GetByIdAsync([FromRoute] int id)
         {
-            var role = await _roleRepository.GetByNameAsync(name);
-            if (role is null)
+            var post = await _postRepository.GetByIdAsync(id);
+            if (post is null)
                 return NotFound();
-            return Ok(role);
+            return Ok(post);
         }
         [HttpPost]
-        public async Task<ActionResult> PostAsync([FromBody] Role role)
+        public async Task<ActionResult> PostAsync([FromBody] Post post)
         {
-            var create = await _roleRepository.CreateAsync(role);
+            var create = await _postRepository.CreateAsync(post);
             if (!create)
                 return NotFound();
             return Ok(create);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutAsync([FromRoute] int id, [FromBody] Role role)
+        public async Task<ActionResult> PutAsync([FromRoute] int id, [FromBody] Post post)
         {
-            var update = await _roleRepository.UpdateAsync(id, role);
+            var update = await _postRepository.UpdateAsync(id, post);
             return Ok(update);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync([FromRoute] int id)
         {
-            var deleted = await _roleRepository.DeleteAsync(id);
+            var deleted = await _postRepository.DeleteAsync(id);
             if (!deleted)
                 return NotFound();
             return Ok(deleted);

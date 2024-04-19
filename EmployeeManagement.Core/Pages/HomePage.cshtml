@@ -1,0 +1,25 @@
+﻿@page
+@model EmployeeManagement.Core.Pages.HomePageModel
+@{
+}
+<div class="p-2 p-sm-3 collapse show">
+    <div class="card mb-2">
+        <div class="card-body p-2 p-sm-3" style="background-color: aliceblue">
+            @foreach (var post in  Model.Posts)
+            {
+                <div class="row">
+
+                    <div class="col-8 bg-light rounded">
+                        <div class="align-content-center">
+                            <h5 class="text-center">@post.Title</h5>
+                        </div>
+                        <hr />
+                        <textarea class="bg-transparent border-0 w-100 h-75" readonly>@post.Content</textarea>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
