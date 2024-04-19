@@ -10,32 +10,32 @@
     
     @if (user == null || user.Id == 0)
     {
-        <section class="vh-100" >
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
+        <section class="vh-100 " >
+            <div class="container py-5 h-100 ">
+                <div class="row d-flex justify-content-center align-items-center h-100 ">
                     <div class="col col-xl-6">
-                        <div class="card" style="border-radius: 2rem; ">
+                        <div class="card " style=" border-radius: 2rem;  ">
      
                                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                                    <div class="card-body p-4 p-lg-5 text-black">
+                                    <div class="card-body p-4 p-lg-5 text-dark ">
 
                                         <form method="post">
 
                                             <div class="d-flex align-items-center mb-3 pb-1">
                                 
-                                                <span class="h1 fw-bold mb-0">Test</span>
+                                                <span class="h1 fw-bold mb-0">Nyköping</span>
                                             </div>
 
-                                            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+                                            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Logga in på ditt konto</h5>
 
                                             <div class="form-outline mb-4">
-                                                <label class="form-label">E-mail address</label>
-                                                <input asp-for="UserInput.Email" type="email" class="form-control rounded-3 py-2" placeholder="E-mail address..." />
+                                                <label class="form-label">E-post address</label>
+                                                <input asp-for="UserInput.Email" type="email" class="form-control rounded-3 py-2" placeholder="E-post address..." />
                                             </div>
 
                                             <div class="form-outline mb-4">
-                                                <label class="form-label">Password</label>
-                                                <input asp-for="UserInput.Password" type="password" class="form-control rounded-3 py-2" placeholder="Password..." />
+                                                <label class="form-label">Lösenord</label>
+                                                <input asp-for="UserInput.Password" type="password" class="form-control rounded-3 py-2" placeholder="Lösenord..." />
                                             </div>
 
                                             <div class="pt-1 mb-4">
