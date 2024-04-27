@@ -18,26 +18,30 @@ namespace EmployeeManagement.Core.Pages
 
         public List<Post> Posts { get; set; }
 
+        public User User { get; set; }
 
-
-        public class CustomPostModel
-        {
-            public string Id { get; set; }
-
-            public string Title { get; set; }
-            public string Content { get; set; }
-            public DateTime CreatedAt { get; set; }
-        }
 
         public HomePageModel(HttpService httpService, ModelManagement modelManagement)
         {
             _httpService = httpService;
             _modelManagement = modelManagement;
         }
-        public async Task<IActionResult> OnGetAsync(int postId,int userId)
+        public async Task<IActionResult> OnGetAsync(int deletePost)
         {
             Posts = await _modelManagement.UpdateListAsync<Models.Post>();
+            if (deletePost != 0)
+            {
+                await _httpService.HttpDeleteRequest<Models.Post>($"Post/{deletePost}");
+                return RedirectToPage();
+            }
             return Page();
+        }
+        public async Task<IActionResult> OnPostDeletePost(int deletePost)
+        {
+            if (deletePost != 0)
+                await _httpService.HttpDeleteRequest<Models.Post>($"Post/{deletePost}");
+
+            return RedirectToPage();
         }
     }
 }

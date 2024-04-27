@@ -39,6 +39,11 @@
                                     <a asp-area="" asp-page="/Admin"><label class="text-white">Admin</label></a>
                                 </i>
                             </li>
+                            <li>
+                                <i class="bi bi-mailbox">
+                                    <a asp-area="" asp-route-userId="@user.Id" asp-page="/PostPage"><label class="text-white">Post sidan</label></a>
+                                </i>
+                            </li>
               
                         }
 
@@ -64,8 +69,8 @@
                             </i>
                         </li>
                         <li>
-                            <i class="bi bi-person">
-                                <a asp-page="HomePage">  <label>Start sidan</label></a>
+                            <i class="bi bi-house">
+                                <a asp-area="" asp-page="HomePage" asp-route-userId="@user.Id">  <label class="text-white">Start sidan</label></a>
                             </i>
                         </li>
                         <li>

@@ -2,24 +2,50 @@
 @model EmployeeManagement.Core.Pages.HomePageModel
 @{
 }
-<div class="p-2 p-sm-3 collapse show">
-    <div class="card mb-2">
-        <div class="card-body p-2 p-sm-3" style="background-color: aliceblue">
-            @foreach (var post in  Model.Posts)
+            @foreach (var post in Model.Posts)
             {
+<div class="p-5 p-sm-3 collapse show">
+    <div class="card mb-10">
+        <div class="card-body p-2 p-sm-3" style="background-color: aliceblue">
                 <div class="row">
 
-                    <div class="col-8 bg-light rounded">
+                    <div class="col-12 bg-light rounded">
                         <div class="align-content-center">
                             <h5 class="text-center">@post.Title</h5>
                         </div>
+                        <div class="col-1 offset20">
+                            @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                            {
+                                <div class="row justify-content-end">
+
+                                    <form method="post">
+                                        <input type="hidden" asp-for="Post.Id" value="@post.Id" />
+                                        <a asp-route-deletePost="@post.Id" class="btn btn-danger" class="border-0 bg-transparent">
+                                            Delete
+                                        </a>
+                                    </form>
+
+                                </div>
+                            }
+                        </div>
                         <hr />
                         <textarea class="bg-transparent border-0 w-100 h-75" readonly>@post.Content</textarea>
+
                     </div>
 
+                    <div style="background-color: aliceblue">
+                    </div>
+                      
+                        <div class="d-flex justify-content-center align-items-center">
+                            @if (post.PostImage != null)
+                            {
+                                <img id="postImage" style="width: 700px; height: 250px; object-fit: cover; border: 2px solid black; border-radius: 10px;" src="data:image/*;base64,@(Convert.ToBase64String(post.PostImage))">
+                            }
+                        </div>
+                 
                 </div>
-            }
 
         </div>
     </div>
 </div>
+            }
