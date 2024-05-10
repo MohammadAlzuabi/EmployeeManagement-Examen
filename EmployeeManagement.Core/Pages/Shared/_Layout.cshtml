@@ -44,6 +44,13 @@
                                     <a asp-area="" asp-route-userId="@user.Id" asp-page="/PostPage"><label class="text-white">Post sidan</label></a>
                                 </i>
                             </li>
+
+                            <li>
+                                <i class="bi bi-inbox">
+                                    <a asp-page="FilePage" asp-route-userId="@user.Id"><label class="text-white">Lägga upp Filer</label></a>
+                                </i>
+
+                            </li>
               
                         }
 
@@ -57,16 +64,24 @@
                             </li>
 
                         }
+
                         <li>
                             <i class="bi bi-inbox">
                                 <a asp-page="Inbox" asp-route-userId="@user.Id"><label class="text-white">Inkorg</label></a>
                             </i>
 
                         </li>
+
                         <li>
                             <i class="bi bi-person">
                                 <a asp-page="UserProfile" asp-route-userId="@user.Id">  <label class="text-white">Profile</label></a>
                             </i>
+                        </li>
+                        <li>
+                            <i class="bi bi-inbox">
+                                <a asp-page="UploadFiles" asp-route-userId="@user.Id"><label class="text-white">Filer</label></a>
+                            </i>
+
                         </li>
                         <li>
                             <i class="bi bi-house">

@@ -14,7 +14,7 @@ namespace EmployeeManagement.API.Repository
 
         public async Task<IEnumerable<User>> GetAsync() => await _context.Users.Include(x => x.Role).Include(x => x.Department).ToListAsync();
 
-        public async Task<User> GetOneAsync(int id) => await _context.Users.Where(x => x.Id == id).Include(u => u.Role).Include(x =>x.Department).FirstOrDefaultAsync();
+        public async Task<User> GetOneAsync(int id) => await _context.Users.Where(x => x.Id == id).Include(u => u.Role).Include(x => x.Department).FirstOrDefaultAsync();
         public async Task<bool> CreateAsync(User user)
         {
             if (user != null)
@@ -30,15 +30,15 @@ namespace EmployeeManagement.API.Repository
 
         public async Task<User> GetUserByRoleAdmin(string roleName) => await _context.Users
             .Include(x => x.Role).Where(x => x.Role.Name == roleName).FirstOrDefaultAsync();
-        public async Task<User> GetUserByRole(string roleName,int userId) => await _context.Users.Include(x => x.Role)
-            .Where( x => x.Role.Name == roleName && x.Id == userId).SingleOrDefaultAsync();
+        public async Task<User> GetUserByRole(string roleName, int userId) => await _context.Users.Include(x => x.Role)
+            .Where(x => x.Role.Name == roleName && x.Id == userId).SingleOrDefaultAsync();
         public async Task<bool> UpdatetAsync(int id, User user)
         {
             var existingUser = await _context.Users.FindAsync(id);
             if (existingUser != null)
             {
                 existingUser.Name = user.Name;
-                existingUser.DepartmentId = user.DepartmentId;
+                existingUser.Department = user.Department;
                 existingUser.Email = user.Email;
                 existingUser.Role = user.Role;
                 existingUser.ProfileImg = user.ProfileImg;

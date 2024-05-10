@@ -1,0 +1,55 @@
+﻿@page
+@model UploadFilesModel
+@{
+}
+
+<h1>Filer</h1>
+
+@if (Model.Files != null && Model.Files.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NAME</th>
+                <th>LADDA NER</th>
+                @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                {
+                    <th>TA-BORT</th>
+                }
+         
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fileData in Model.Files)
+            {
+                <tr>
+                    <td>@fileData.Name</td>
+                    <td>
+                        @if (fileData.File != null)
+                        {
+                            <form asp-page-handler="Download" method="post" asp-route-id="@fileData.Id">
+                                <input type="submit" class="btn btn-dark" value="Ladda ner" />
+                            </form>
+
+                        }
+
+
+                    </td>
+                    <td>
+                        @if (fileData.File != null && Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                        {
+                            <form asp-page-handler="Delete" method="post" asp-route-id="@fileData.Id">
+                                <input type="submit" class="btn btn-danger" value="Ta bort" />
+                            </form>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Inga filer.</p>
+}
