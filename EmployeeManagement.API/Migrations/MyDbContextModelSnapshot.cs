@@ -38,6 +38,27 @@ namespace EmployeeManagement.API.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("EmployeeManagement.Core.Models.FileData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte>("File")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Files");
+                });
+
             modelBuilder.Entity("EmployeeManagement.Core.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -151,6 +172,15 @@ namespace EmployeeManagement.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EmployeeManagement.Core.Models.FileData", b =>
+                {
+                    b.HasOne("EmployeeManagement.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EmployeeManagement.Core.Models.User", b =>

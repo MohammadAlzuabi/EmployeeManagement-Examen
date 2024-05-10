@@ -40,6 +40,11 @@ namespace EmployeeManagement.Core.Pages
             {
                 await CreateAdminUserAsync();
             }
+            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Department>();
+            if (isExisting is false)
+            {
+                await CreateDepartmentAsync();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -91,9 +96,34 @@ namespace EmployeeManagement.Core.Pages
             {
                 Email = "admin@nykoping.com",
                 Password = "8089AB6B1C60E94BF3D0564DCD59E2B9E163FCAD163E810CF975A3CDC3D792E76868DFCB6D45356374253D197E55AEF8D839B9ECA8762B17F8331F08C0EF3257", //123
-                RoleId = role.Id
+                RoleId = role.Id,
+
+
             };
             return await _httpService.HttpPostRequest($"User", admin);
+        }
+
+        private async Task<bool> CreateDepartmentAsync()
+        {
+
+            var departments = new List<Department>
+            {
+                new Department {  Name = "Adminstatör" },
+                new Department { Name = "2A" },
+                new Department { Name = "2B" },
+                new Department { Name = "1A" }
+            };
+            foreach (var department in departments)
+            {
+                var success = await _httpService.HttpPostRequest($"Department", department);
+                if (!success)
+                {
+                    return false;
+                }
+            }
+            return true;
+
+
         }
     }
 }
