@@ -45,7 +45,8 @@ namespace EmployeeManagement.Core.Pages
                         p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
                         p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
                         .ToList();
-
+                Departments = Departments.Where(p =>
+                        p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ).ToList();
             return Page();
         }
 
