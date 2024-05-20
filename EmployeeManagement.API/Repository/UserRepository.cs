@@ -38,9 +38,9 @@ namespace EmployeeManagement.API.Repository
             if (existingUser != null)
             {
                 existingUser.Name = user.Name;
-                existingUser.Department = user.Department;
+                existingUser.DepartmentId = user.DepartmentId;
                 existingUser.Email = user.Email;
-                existingUser.Role = user.Role;
+                existingUser.RoleId = user.RoleId;
                 existingUser.ProfileImg = user.ProfileImg;
                 _context.Users.Update(existingUser);
                 await _context.SaveChangesAsync();

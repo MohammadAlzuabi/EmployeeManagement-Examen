@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="NewUserDepartment" class="form-label">Avdelning</label>
-                                    <select class="form-select" asp-for="NewUser.Department">
+                                    <select class="form-select" asp-for="NewUser.DepartmentId">
                                         @if (Model.Departments is not null)
                                         {
                                             @foreach (var department in Model.Departments)
