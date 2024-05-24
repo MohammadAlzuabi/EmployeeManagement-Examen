@@ -40,12 +40,18 @@ namespace EmployeeManagement.Core.Pages
             Departments = await _modelManagement.UpdateListAsync<Department>();
 
             if (searchString != null)
+            {
                 Users = Users.Where(p =>
-                        p.Email.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
-                        .ToList();
-                return Page();
+                       p.Email.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                       p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
+                       .ToList();
+               Departments = Departments.Where(p =>
+                       p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                return RedirectToPage();
+            }
+            return Page();
+
         }
 
         public async Task<IActionResult> OnPostDeleteUser([FromForm] int deleteId)
