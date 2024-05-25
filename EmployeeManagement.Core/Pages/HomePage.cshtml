@@ -3,27 +3,51 @@
 
 @foreach (var post in Model.Posts)
 {
-    <div class="container py-4">
-        <div class="card mb-4 shadow">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-4">@post.Title</h2>
-                @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
-                {
-                    <div class="text-end">
-                        <form method="post">
-                            <input type="hidden" asp-for="Post.Id" value="@post.Id" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
-                }
-                <hr />
-                <p class="card-text">@post.Content</p>
-                <hr />
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="card" style="max-width: 600px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@post.Title</h5>
+                    @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                    {
+                        <div class="text-end mb-3">
+                            <form method="post">
+                                <input type="hidden" asp-for="Post.Id" value="@post.Id" />
+                                <a asp-route-deletePost="@post.Id" class="btn btn-danger" class="border-0 bg-transparent">
+                                    Delete
+                                </a>
+                            </form>
+                        </div>
+                    }
+                    <hr />
+                    <p class="card-text">@post.Content</p>
+                    @if (post.PostImage != null)
+                    {
+                        <div class="text-center">
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(post.PostImage))" class="img-fluid rounded clickable-image" style="max-width: 100%; max-height: 300px;" data-toggle="modal" data-target="#imageModal">
+                        </div>
+                    }
+                </div>
             </div>
-            @if (post.PostImage != null)
-            {
-                <img src="data:image/*;base64,@(Convert.ToBase64String(post.PostImage))" class="card-img-bottom" style="object-fit: cover; border-radius: 0 0 7px 7px;">
-            }
         </div>
     </div>
 }
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="" id="modalImage" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Funktion för att sätta källan för bilden i modalfönstret
+    $('.clickable-image').click(function () {
+        var imageSource = $(this).attr('src');
+        $('#modalImage').attr('src', imageSource);
+    });
+</script>

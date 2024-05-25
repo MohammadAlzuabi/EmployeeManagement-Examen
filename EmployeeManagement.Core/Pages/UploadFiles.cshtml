@@ -28,7 +28,7 @@
                             @if (fileData.File != null)
                             {
                                 <form asp-page-handler="Download" method="post" asp-route-id="@fileData.Id">
-                                    <button type="submit" class="btn btn-primary">Ladda ner</button>
+                                    <button type="submit" class="btn btn-primary btn-sm ">Ladda ner</button>
                                 </form>
                             }
                         </td>
@@ -36,7 +36,7 @@
                             @if (fileData.File != null && Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
                             {
                                 <form asp-page-handler="Delete" method="post" asp-route-id="@fileData.Id">
-                                    <button type="submit" class="btn btn-danger">Ta bort</button>
+                                    <button type="submit" class="btn btn-danger btn-sm ">Ta bort</button>
                                 </form>
                             }
                         </td>

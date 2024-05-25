@@ -6,7 +6,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-8 text-center">
-            <h3><span class="text-primary">Inkorg</span></h3>
+            <h3><span class="text-primary ">Inkorg</span></h3>
             @if (Model.Messages != null && Model.Messages.Any())
             {
                 @foreach (var message in Model.Messages.OrderByDescending(m => m.SentAt).Where(x => x.IsRead == false))
@@ -16,14 +16,14 @@
                         <div class="d-flex align-items-center">
                             @if (message.FromUser.ProfileImg != null)
                             {
-                                <img class="rounded-circle me-2" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;"> 
+                                <img class="rounded-circle me-2" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;">
                             }
                             else
                             {
-                                <img class="rounded-circle me-2" src="/img/user-profile-icon.jpg" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;"> 
+                                <img class="rounded-circle me-2" src="/img/user-profile-icon.jpg" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;">
                             }
                             <div class="flex-grow-1">
-                                <p class="mb-0 fw-bold" style="color: #333;">@message.FromUser.Email</p> 
+                                <p class="mb-0 fw-bold" style="color: #333;">@message.FromUser.Email</p>
                                 <small class="text-muted">@message.SentAt.ToShortDateString()</small>
                             </div>
                             @if (!message.IsRead)
@@ -36,16 +36,16 @@
                                     <input type="hidden" name="Message.FromUserId" value="@message.FromUser.Id" />
                                     <input type="hidden" name="Message.ToUserId" value="@message.CurrentUser.Id" />
                                     <input type="hidden" name="Message.IsRead" value="true" />
-                                    <button class="btn btn-sm btn-primary" type="submit">x</button> 
+                                    <button class="btn btn-sm btn-primary" type="submit">x</button>
                                 </form>
                             }
                         </div>
                         <hr class="my-2">
                         <div class="message-content mb-3">
                             <div class="col-12">
-                                <h5 class="message-title fw-bold mb-2" style="color: #333;">@message.Title</h5> 
+                                <h5 class="message-title fw-bold mb-2" style="color: #333;">@message.Title</h5>
                                 <div class="col-1">
-                                    <p style="color: #666;">@message.Content</p> 
+                                    <p style="color: #666;">@message.Content</p>
                                 </div>
                             </div>
                         </div>
