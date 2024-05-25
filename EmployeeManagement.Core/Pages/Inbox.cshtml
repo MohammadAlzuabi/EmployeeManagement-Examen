@@ -3,96 +3,70 @@
 @{
 }
 
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-8 text-center">
-            <h3>Inkorg</h3>
-            <div class="accordion" id="accordionInboxMessages">
-                @{
-                    var num = 1;
-                }
-                @if (Model.Messages != null && Model.Messages.Any())
+            <h3><span class="text-primary">Inkorg</span></h3>
+            @if (Model.Messages != null && Model.Messages.Any())
+            {
+                @foreach (var message in Model.Messages.OrderByDescending(m => m.SentAt).Where(x => x.IsRead == false))
                 {
-                    @foreach (var message in Model.Messages.OrderByDescending(m => m.SentAt).Where(x => x.IsRead == false))
-                    {
-                        var heading = "heading" + num;
-                        var collapse = "collapse" + num;
-                        var collapseId = "#collapse" + num;
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="@heading">
-                                @if (message.IsRead)
-                                {
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@collapseId" aria-expanded="false" aria-controls="@collapse">
-                                        <span class="text-left">
-                                            @if (message.FromUser.ProfileImg != null)
-                                            {
-                                                <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 30px" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image">
-                                            }
-                                            else
-                                            {
-                                                <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 30px" src="/img/user-profile-icon.jpg" alt="User image">
-                                            }
-                                            Meddelande från @message.FromUser.Email Skickades @message.SentAt
-                                        </span>
-                                    </button>
-                                }
-                                else
-                                {
-                                    <form method="post" asp-page-handler="ReadMessage">
-                                        <input type="hidden" asp-for="Message.Id" value="@message.Id" />
-                                        <input type="hidden" asp-for="Message.Content" value="@message.Content" />
-                                        <input type="hidden" asp-for="Message.Title" value="@message.Title" />
-                                        <input type="hidden" asp-for="Message.SentAt" value="@message.SentAt" />
-                                        <input type="hidden" asp-for="Message.FromUserId" value="@message.FromUser.Id" />
-                                        <input type="hidden" asp-for="Message.ToUserId" value="@message.CurrentUser.Id" />
-                                        <input type="hidden" asp-for="Message.IsRead" value="@true" />
-                                        <button class="accordion-button" type="submit" data-bs-toggle="collapse" data-bs-target="@collapseId" aria-expanded="false" aria-controls="@collapse">
-                                            <div class="d-flex align-items-center">
-                                                @if (@message.FromUser != null && @message.FromUser.ProfileImg != null)
-                                                {
-                                                    <img class="rounded-circle me-2" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image" style="width: 40px; height: 40px; object-fit: cover;">
-                                                }
-                                                else
-                                                {
-                                                    <img class="rounded-circle me-2" src="/img/user-profile-icon.jpg" alt="User image" style="width: 40px; height: 40px; object-fit: cover;">
-                                                }
-                                                <div>
-                                                    <p class="mb-0 fw-bold">@message.FromUser.Email</p>
-                                                    <small class="text-muted">@message.SentAt.ToShortDateString()</small>
-                                                </div>
-                                            </div>
-                                        </button>
-                                    </form>
-                                }
-                            </h2>
-                            <div id="@collapse" class="accordion-collapse collapse show" aria-labelledby="@heading" data-bs-parent="#accordionInboxMessages">
-                                <div class="accordion-body">
-                                    <h5 class="message-title fw-bold mb-3">@message.Title</h5>
-                                    <textarea class="message-content form-control bg-transparent border-0" style="height: 100%;" readonly>@message.Content</textarea>
-                                </div>
-                                <div class="row justify-content-end">
-                                    <div class="col-2">
-                                        @if (message != null && message.FromUser != null && message.FromUser.Email != null && @message.FromUser != null)
-                                        {
-                                            <button class="border-0 bg-transparent nav-item" type="button" data-bs-toggle="modal" data-bs-target="#replyMessageModal"
-                                                    data-bs-toUserId="@message.FromUser.Id" data-bs-toUsername="@message.FromUser.Email" data-bs-fromUserId="@message.CurrentUser.Id">
-                                                <span style="font-size: 1rem; color: rgba(0, 0, 0, .55)">
-                                                    <i class="fas fa-comment-dots ml-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Svara på meddelande från @message.FromUser.Email"></i>
-                                                    Svara
-                                                </span>
-                                            </button>
-                                        }
-                                    </div>
+                    <div class="message-item p-3 mb-3 border rounded position-relative bg-light py-2 mb-2">
+                        <!-- Lägg till bakgrundsfärgen bg-white -->
+                        <div class="d-flex align-items-center">
+                            @if (message.FromUser.ProfileImg != null)
+                            {
+                                <img class="rounded-circle me-2" src="data:image/*;base64,@(Convert.ToBase64String(@message.FromUser.ProfileImg))" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;"> 
+                            }
+                            else
+                            {
+                                <img class="rounded-circle me-2" src="/img/user-profile-icon.jpg" alt="User image" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #ccc;"> 
+                            }
+                            <div class="flex-grow-1">
+                                <p class="mb-0 fw-bold" style="color: #333;">@message.FromUser.Email</p> 
+                                <small class="text-muted">@message.SentAt.ToShortDateString()</small>
+                            </div>
+                            @if (!message.IsRead)
+                            {
+                                <form method="post" asp-page-handler="ReadMessage" class="mb-0">
+                                    <input type="hidden" name="Message.Id" value="@message.Id" />
+                                    <input type="hidden" name="Message.Content" value="@message.Content" />
+                                    <input type="hidden" name="Message.Title" value="@message.Title" />
+                                    <input type="hidden" name="Message.SentAt" value="@message.SentAt" />
+                                    <input type="hidden" name="Message.FromUserId" value="@message.FromUser.Id" />
+                                    <input type="hidden" name="Message.ToUserId" value="@message.CurrentUser.Id" />
+                                    <input type="hidden" name="Message.IsRead" value="true" />
+                                    <button class="btn btn-sm btn-primary" type="submit">x</button> 
+                                </form>
+                            }
+                        </div>
+                        <hr class="my-2">
+                        <div class="message-content mb-3">
+                            <div class="col-12">
+                                <h5 class="message-title fw-bold mb-2" style="color: #333;">@message.Title</h5> 
+                                <div class="col-1">
+                                    <p style="color: #666;">@message.Content</p> 
                                 </div>
                             </div>
                         </div>
-                        num++;
-                    }
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-sm btn-link text-decoration-none" type="button" data-bs-toggle="modal" data-bs-target="#replyMessageModal"
+                                    data-bs-toUserId="@message.FromUser.Id" data-bs-toUsername="@message.FromUser.Email" data-bs-fromUserId="@message.CurrentUser.Id">
+                                <i class="fas fa-reply" style="color: #007bff;"></i> <!-- Ändra svarspilen till blå -->
+                                Svara
+                            </button>
+                        </div>
+                    </div>
                 }
-            </div>
+            }
+            else
+            {
+                <p>Inga olästa meddelanden.</p>
+            }
         </div>
     </div>
 </div>
+
 <!-- Reply Message Modal -->
 <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -106,7 +80,7 @@
                     <input id="messageFromUserId" type="hidden" asp-for="Message.FromUserId" />
                     <input id="messageToUserId" type="hidden" asp-for="Message.ToUserId" />
                     <div class="form-floating mb-3">
-                        <input id="floatingInput" class="form-control justify-self-center" style="width: 100%; height: 50%" placeholder="Meddelande" asp-for="Message.Title"/>
+                        <input id="floatingInput" class="form-control justify-self-center" style="width: 100%; height: 50%" placeholder="Meddelande" asp-for="Message.Title" />
                         <label for="floatingInput">Rubrik</label>
                     </div>
                     <div class="form-floating mb-3">

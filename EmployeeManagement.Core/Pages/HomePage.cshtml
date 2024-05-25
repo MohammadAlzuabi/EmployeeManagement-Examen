@@ -2,11 +2,11 @@
 @model EmployeeManagement.Core.Pages.HomePageModel
 @{
 }
-            @foreach (var post in Model.Posts)
-            {
-<div class="p-5 p-sm-3 collapse show">
-    <div class="card mb-10">
-        <div class="card-body p-2 p-sm-3" style="background-color: aliceblue">
+@foreach (var post in Model.Posts)
+{
+    <div class="p-5 p-sm-3 collapse show">
+        <div class="card mb-10">
+            <div class="card-body p-2 p-sm-3" style="background-color: aliceblue">
                 <div class="row">
 
                     <div class="col-12 bg-light rounded">
@@ -35,17 +35,17 @@
 
                     <div style="background-color: aliceblue">
                     </div>
-                      
-                        <div class="d-flex justify-content-center align-items-center">
-                            @if (post.PostImage != null)
-                            {
-                                <img id="postImage" style="width: 700px; height: 250px; object-fit: cover; border: 2px solid black; border-radius: 10px;" src="data:image/*;base64,@(Convert.ToBase64String(post.PostImage))">
-                            }
-                        </div>
-                 
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        @if (post.PostImage != null)
+                        {
+                            <img id="postImage" style="width: 700px; height: 250px; object-fit: cover; border: 2px solid black; border-radius: 10px;" src="data:image/*;base64,@(Convert.ToBase64String(post.PostImage))">
+                        }
+                    </div>
+
                 </div>
 
+            </div>
         </div>
     </div>
-</div>
-            }
+}
