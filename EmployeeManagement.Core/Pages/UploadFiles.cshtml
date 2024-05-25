@@ -3,53 +3,50 @@
 @{
 }
 
-<h1>Filer</h1>
+<h1 class="text-center">Filer</h1>
 
 @if (Model.Files != null && Model.Files.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>NAMN</th>
-                <th>LADDA NER</th>
-                @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
-                {
-                    <th>TA-BORT</th>
-                }
-         
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var fileData in Model.Files)
-            {
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td>@fileData.Name</td>
-                    <td>
-                        @if (fileData.File != null)
-                        {
-                            <form asp-page-handler="Download" method="post" asp-route-id="@fileData.Id">
-                                <input type="submit" class="btn btn-dark" value="Ladda ner" />
-                            </form>
-
-                        }
-
-
-                    </td>
-                    <td>
-                        @if (fileData.File != null && Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
-                        {
-                            <form asp-page-handler="Delete" method="post" asp-route-id="@fileData.Id">
-                                <input type="submit" class="btn btn-danger" value="Ta bort" />
-                            </form>
-                        }
-
-                    </td>
+                    <th scope="col">NAMN</th>
+                    <th scope="col">LADDA NER</th>
+                    @if (Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                    {
+                        <th scope="col">TA-BORT</th>
+                    }
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var fileData in Model.Files)
+                {
+                    <tr>
+                        <td>@fileData.Name</td>
+                        <td>
+                            @if (fileData.File != null)
+                            {
+                                <form asp-page-handler="Download" method="post" asp-route-id="@fileData.Id">
+                                    <button type="submit" class="btn btn-primary">Ladda ner</button>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (fileData.File != null && Mangement.UserManagement.GetLoggedInUser() != null && Mangement.UserManagement.GetLoggedInUser().IsAdmin())
+                            {
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@fileData.Id">
+                                    <button type="submit" class="btn btn-danger">Ta bort</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
-    <p>Inga filer.</p>
+    <p class="text-center">Inga filer.</p>
 }
