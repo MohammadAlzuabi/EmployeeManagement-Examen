@@ -44,7 +44,7 @@ namespace EmployeeManagement.Core.Pages
 
         public async Task<IActionResult> OnPostAsync(int userId)
         {
-            await UpplodImage();
+        
 
             var user = await _httpService.HttpGetRequest<Models.User>($"User/{userId}");
             if (EditUser.ProfileImg == null)
@@ -53,6 +53,11 @@ namespace EmployeeManagement.Core.Pages
             }
             if (EditUser != null && EditUser.Id != 0)
             {
+                if (Request.Form.Files.Count > 0)
+                {
+                    var file = Request.Form.Files.FirstOrDefault();
+                    EditUser.ProfileImg = await Helper.UploadImageAsync(file);
+                }
                 await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
                 StatusMessage = "Din profil har uppdaterats";
             }
@@ -64,21 +69,6 @@ namespace EmployeeManagement.Core.Pages
             return RedirectToPage($"/UserProfile", new { userId });
         }
 
-        private async Task UpplodImage()
-        {
-            if (Request.Form.Files.Count > 0)
-            {
-                var file = Request.Form.Files.FirstOrDefault();
-                await using (var dataStream = new MemoryStream())
-                {
-                    if (file != null)
-                    {
-                        await file.CopyToAsync(dataStream);
-                        EditUser.ProfileImg = dataStream.ToArray();
-                    }
-
-                }
-            }
-        }
+      
     }
 }

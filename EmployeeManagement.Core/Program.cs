@@ -16,6 +16,7 @@ namespace EmployeeManagement.Core
             builder.Services.AddSingleton<HttpService>();
             builder.Services.AddSingleton<ModelManagement>();
             builder.Services.AddSingleton<UserManagement>();
+            builder.Services.AddSingleton<Helper>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

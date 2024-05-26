@@ -33,7 +33,7 @@ namespace EmployeeManagement.Core.Pages
         }
         public async Task<IActionResult> OnPostAsync(int userId)
         {
-            await UpplodImage();
+     
 
             var user = await GetUserById(userId); ;
             if (user != null)
@@ -43,6 +43,11 @@ namespace EmployeeManagement.Core.Pages
             Post.UserId=  UserId ;
             if (ModelState.IsValid || Post != null && Post.UserId != null)
             {
+                if (Request.Form.Files.Count > 0)
+                {
+                    var file = Request.Form.Files.FirstOrDefault();
+                    Post.PostImage = await Helper.UploadImageAsync(file);
+                }
                 await _httpService.HttpPostRequest($"Post", Post);
 
                 StatusMessage = "Du har skapat inlägget";
@@ -60,20 +65,6 @@ namespace EmployeeManagement.Core.Pages
         {
             return await _httpService.HttpGetRequest<User>($"User/{userId}");
         }
-        private async Task UpplodImage()
-        {
-            if (Request.Form.Files.Count > 0)
-            {
-                var file = Request.Form.Files.FirstOrDefault();
-                await using (var dataStream = new MemoryStream())
-                {
-                    if (file != null)
-                    {
-                        await file.CopyToAsync(dataStream);
-                        Post.PostImage = dataStream.ToArray();
-                    }
-                }
-            }
-        }
+      
     }
 }

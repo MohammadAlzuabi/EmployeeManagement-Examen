@@ -19,8 +19,8 @@ namespace EmployeeManagement.Core.Pages
         [BindProperty]
         public IFormFile file { get; set; }
 
-        [BindProperty]
-        public int Id { get; set; }
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public FilePageModel(HttpService httpService, ModelManagement modelManagement)
         {
@@ -54,7 +54,12 @@ namespace EmployeeManagement.Core.Pages
                     if (FileData.UserId != null && FileData.File != null && FileData.Name != null)
                     {
                         await _httpService.HttpPostRequest($"FileData", FileData);
+                        StatusMessage = "Din fil har laddats upp!";
 
+                    }
+                    else
+                    {
+                        StatusMessage = "Det uppstod ett fel vid uppladdning av filen";
                     }
                 }
             }

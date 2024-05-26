@@ -2,6 +2,12 @@
 @model EmployeeManagement.Core.Pages.FilePageModel
 @{
 }
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert @((Model.StatusMessage.Contains("uppdaterats")) ? "alert-danger"  : "alert-success")" role="alert">
+        @Model.StatusMessage
+    </div>
+}
 <h1 class="text-center">Filer</h1>
 
 <div class="container">
