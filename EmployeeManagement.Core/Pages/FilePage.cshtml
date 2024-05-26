@@ -7,19 +7,23 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form method="post" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="file" class="form-label">Välj fil</label>
-                    <input type="file" class="form-control" id="file" name="file" accept=".pdf" required />
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Välj fil</label>
+                            <input type="file" class="form-control" id="file" name="file" accept=".pdf" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fileName" class="form-label">Filnamn</label>
+                            <input id="fileName" class="form-control" type="text" asp-for="FileData.Name" placeholder="Filnamn" />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark">Ladda upp</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="fileName" class="form-label">Filnamn</label>
-                    <input id="fileName" class="form-control" type="text" asp-for="FileData.Name" placeholder="Filnamn" />
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-dark">Ladda upp</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -48,7 +48,7 @@ namespace EmployeeManagement.Core.Pages
                        .ToList();
                Departments = Departments.Where(p =>
                        p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-                return RedirectToPage();
+                return Page();
             }
             return Page();
 

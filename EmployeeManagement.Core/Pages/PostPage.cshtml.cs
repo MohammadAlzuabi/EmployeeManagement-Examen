@@ -12,14 +12,13 @@ namespace EmployeeManagement.Core.Pages
         private readonly HttpService _httpService;
         private readonly ModelManagement _modelManagement;
 
-
-
         [BindProperty]
         public Post Post { get; set; }
 
         public List<Post> Posts { get; set; }
 
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public int UserId { get; set; }
 
         public PostPageModel(HttpService httpService, ModelManagement modelManagement)
@@ -45,8 +44,14 @@ namespace EmployeeManagement.Core.Pages
             if (ModelState.IsValid || Post != null && Post.UserId != null)
             {
                 await _httpService.HttpPostRequest($"Post", Post);
+
+                StatusMessage = "Du har skapat inlägget";
                 return RedirectToPage(new { userId = Post.UserId });
 
+            }
+            else
+            {
+                StatusMessage = "Det uppstod ett fel";
             }
             return Page();
         }
@@ -67,7 +72,6 @@ namespace EmployeeManagement.Core.Pages
                         await file.CopyToAsync(dataStream);
                         Post.PostImage = dataStream.ToArray();
                     }
-
                 }
             }
         }
