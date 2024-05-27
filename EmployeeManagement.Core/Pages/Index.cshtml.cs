@@ -30,24 +30,24 @@ namespace EmployeeManagement.Core.Pages
 
         public async void OnGetAsync()
         {
-            var isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Role>();
+            var isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Role>(); // Skapa roller dem inte finns databasen
             if (isExisting is false)
             {
                 await CreateRolesAsync();
             }
-            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<User>();
+            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<User>();// Kollar om det finns redan user annras skapar den i databasen
             if (isExisting is false)
             {
                 await CreateAdminUserAsync();
             }
-            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Department>();
+            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Department>();//Kollar om det finns redan avdlingar annras skapar den i databasen
             if (isExisting is false)
             {
                 await CreateDepartmentAsync();
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync() // LoggInUser
         {
             if (UserInput.Email != null && UserInput.Password != null)
             {
@@ -73,13 +73,13 @@ namespace EmployeeManagement.Core.Pages
             return RedirectToPage("/HomePage");
         }
 
-        public IActionResult OnPostLogoutUser()
+        public IActionResult OnPostLogoutUser() 
         {
             UserManagement.LogoutUser();
             return RedirectToPage();
         }
 
-        private async Task CreateRolesAsync()
+        private async Task CreateRolesAsync() // Skapa roller
         {
             var roleNames = Enum.GetNames(typeof(Enums.Enums.Roles)).ToList();
             foreach (var roleName in roleNames)
@@ -88,7 +88,7 @@ namespace EmployeeManagement.Core.Pages
             }
         }
 
-        private async Task<bool> CreateAdminUserAsync()
+        private async Task<bool> CreateAdminUserAsync() // Skapa admin med lösenord 123
         {
             var adminRoleName = Enums.Enums.Roles.Admin.ToString();
             var role = await _httpService.HttpGetRequest<Role>($"Role/{adminRoleName}");
@@ -103,7 +103,7 @@ namespace EmployeeManagement.Core.Pages
             return await _httpService.HttpPostRequest($"User", admin);
         }
 
-        private async Task<bool> CreateDepartmentAsync()
+        private async Task<bool> CreateDepartmentAsync() // Skapa avdelningar
         {
 
             var departments = new List<Department>

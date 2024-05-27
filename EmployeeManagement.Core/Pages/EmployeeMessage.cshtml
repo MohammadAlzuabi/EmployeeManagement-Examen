@@ -13,25 +13,34 @@
 }
 @if (user != null && Model.SendToUser.Id != Model.UserId)
 {
-    <div id="messageForm">
-        <form method="post">
-            <input type="hidden" asp-for="SendMessage.Id" />
-            <input type="hidden" asp-for="SendMessage.FromUserId" value="@Model.UserId" />
-            <input type="hidden" id="messageToUserId" asp-for="SendMessage.ToUserId" value="@Model.SendToUser.Id" />
+    <div class="container my-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Skicka Meddelande</h5>
+                        <form method="post">
+                            <input type="hidden" asp-for="SendMessage.Id" />
+                            <input type="hidden" asp-for="SendMessage.FromUserId" value="@Model.UserId" />
+                            <input type="hidden" id="messageToUserId" asp-for="SendMessage.ToUserId" value="@Model.SendToUser.Id" />
 
-            <div class="mb-3">
-                <label for="messageTitle" class="form-label">Rubrik</label>
-                <input id="messageTitle" class="form-control" type="text" asp-for="SendMessage.Title" placeholder="Rubrik" />
-            </div>
-            <div class="mb-3">
-                <label for="messageContent" class="form-label">Meddelande</label>
-                <textarea id="messageContent" class="form-control" asp-for="SendMessage.Content" placeholder="Meddelande"></textarea>
-            </div>
+                            <div class="mb-3">
+                                <label for="messageTitle" class="form-label">Rubrik</label>
+                                <input id="messageTitle" class="form-control" type="text" asp-for="SendMessage.Title" placeholder="Rubrik" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="messageContent" class="form-label">Meddelande</label>
+                                <textarea id="messageContent" class="form-control" asp-for="SendMessage.Content" placeholder="Meddelande"></textarea>
+                            </div>
 
-            <div class="mb-3">
-                <input type="submit" name="addTask" value="Skicka meddelande" class="btn btn-dark" />
+                            <div class="mb-3 text-center">
+                                <input type="submit" name="addTask" value="Skicka meddelande" class="btn btn-dark" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 }
 

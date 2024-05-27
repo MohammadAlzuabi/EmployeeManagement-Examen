@@ -29,10 +29,8 @@ namespace EmployeeManagement.Core.Mangment
 
         public async Task<T?> HttpGetRequestById<T>(string endpoint, T id)
         {
-            // Construct the request URL by appending the id to the endpoint
-            string requestUri = $"{endpoint}/{id}";
 
-            // Make the GET request using the existing method
+            string requestUri = $"{endpoint}/{id}";
             return await HttpGetRequest<T>(requestUri);
         }
         public async Task<bool> HttpPostRequest<T>(string requestUri, T entity)

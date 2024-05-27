@@ -12,7 +12,7 @@ namespace EmployeeManagement.Core.Mangement
         }
         public static void UpdateLoggedInUsers(User loggedInUsers)
         {
-            // Uppdatera den statiska listan med inloggade användare
+            // Uppdatera den inloggade användaren
             _loggedInUser = loggedInUsers;
         }
         public static Models.User GetLoggedInUser()
