@@ -39,15 +39,18 @@ namespace EmployeeManagement.Core.Pages
             Users = await _modelManagement.UpdateListAsync<Models.User>();
             Departments = await _modelManagement.UpdateListAsync<Department>();
 
-            if (searchString != null)
+            if (!string.IsNullOrEmpty(searchString))
             {
-                Users = Users.Where(p =>
-                       p.Email.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                       p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                       p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
-                       .ToList();
-                return Page();
+                var filteredUsers = Users.Where(p =>
+                    p.Email.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToList();
+
+                Users = filteredUsers;
             }
+      
+
             return Page();
 
         }

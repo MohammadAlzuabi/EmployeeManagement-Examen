@@ -41,7 +41,7 @@ namespace EmployeeManagement.Core.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync() // LoggInUser
+        public async Task<IActionResult> OnPostAsync() 
         {
             if (IsValidInput(UserInput.Email, UserInput.Password))
             {
