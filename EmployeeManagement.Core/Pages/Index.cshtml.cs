@@ -27,23 +27,17 @@ namespace EmployeeManagement.Core.Pages
         }
 
 
-
-        public async void OnGetAsync()
+        public async Task OnGetAsync()
         {
-            var isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Role>(); // Skapa roller dem inte finns databasen
-            if (isExisting is false)
+            try
             {
-                await CreateRolesAsync();
+                await EnsureEntitiesExistAsync<Role>();
+                await EnsureEntitiesExistAsync<User>();
+                await EnsureEntitiesExistAsync<Department>();
             }
-            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<User>();// Kollar om det finns redan user annras skapar den i databasen
-            if (isExisting is false)
+            catch (Exception ex)
             {
-                await CreateAdminUserAsync();
-            }
-            isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<Department>();//Kollar om det finns redan avdlingar annras skapar den i databasen
-            if (isExisting is false)
-            {
-                await CreateDepartmentAsync();
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -63,7 +57,6 @@ namespace EmployeeManagement.Core.Pages
                     return Page();
                 }
             }
-
             return RedirectToPage("/HomePage");
         }
 
@@ -115,6 +108,30 @@ namespace EmployeeManagement.Core.Pages
             var results = await Task.WhenAll(tasks);
 
             return results.All(success => success);
+        }
+
+        private async Task EnsureEntitiesExistAsync<TEntity>() where TEntity : class
+        {
+            var isExisting = await _modelManagement.CheckIfEntityExistsInDBAsync<TEntity>();
+
+            if (!isExisting)
+            {
+                switch (typeof(TEntity).Name)
+                {
+                    case nameof(Role):
+                        await CreateRolesAsync();
+                        break;
+                    case nameof(User):
+                        await CreateAdminUserAsync();
+                        break;
+                    case nameof(Department):
+                        await CreateDepartmentAsync();
+                        break;
+                    default:
+                        Console.WriteLine($"Entity of type {typeof(TEntity).Name} is not handled.");
+                        break;
+                }
+            }
         }
         private bool IsValidInput(string email, string password)
         {
