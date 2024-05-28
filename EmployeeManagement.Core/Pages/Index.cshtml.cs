@@ -49,20 +49,13 @@ namespace EmployeeManagement.Core.Pages
 
         public async Task<IActionResult> OnPostAsync() // LoggInUser
         {
-            if (UserInput.Email != null && UserInput.Password != null)
+            if (IsValidInput(UserInput.Email, UserInput.Password))
             {
-                Users = await _modelManagement.UpdateListAsync<User>();
-                if (Users is null || !Users.Any())
-                    return RedirectToPage();
+                var loggedInUser = await GetLoggedInUserAsync(UserInput.Email);
 
-                LoggedInUser = Users.FirstOrDefault(u => u.Email == UserInput.Email);
-                if (LoggedInUser is null)
-                    return RedirectToPage();
-
-                var isValideted = _modelManagement.VerifyPassword(UserInput.Password, LoggedInUser.Password);
-                if (isValideted)
+                if (loggedInUser != null && VerifyPassword(UserInput.Password, loggedInUser.Password))
                 {
-                    UserManagement.SetLoggedInUser(LoggedInUser);
+                    UserManagement.SetLoggedInUser(loggedInUser);
                 }
                 else
                 {
@@ -70,10 +63,11 @@ namespace EmployeeManagement.Core.Pages
                     return Page();
                 }
             }
+
             return RedirectToPage("/HomePage");
         }
 
-        public IActionResult OnPostLogoutUser() 
+        public IActionResult OnPostLogoutUser()
         {
             UserManagement.LogoutUser();
             return RedirectToPage();
@@ -90,40 +84,65 @@ namespace EmployeeManagement.Core.Pages
 
         private async Task<bool> CreateAdminUserAsync() // Skapa admin med lösenord 123
         {
-            var adminRoleName = Enums.Enums.Roles.Admin.ToString();
-            var role = await _httpService.HttpGetRequest<Role>($"Role/{adminRoleName}");
-            var admin = new User()
+            const string adminEmail = "admin@nykoping.com";
+            const string adminPasswordHash = "8089AB6B1C60E94BF3D0564DCD59E2B9E163FCAD163E810CF975A3CDC3D792E76868DFCB6D45356374253D197E55AEF8D839B9ECA8762B17F8331F08C0EF3257"; // 123
+            const string adminRoleName = "Admin";
+
+            var role = await GetRoleAsync(adminRoleName);
+            if (role == null)
             {
-                Email = "admin@nykoping.com",
-                Password = "8089AB6B1C60E94BF3D0564DCD59E2B9E163FCAD163E810CF975A3CDC3D792E76868DFCB6D45356374253D197E55AEF8D839B9ECA8762B17F8331F08C0EF3257", //123
-                RoleId = role.Id,
+                return false;
+            }
 
+            var admin = CreateAdminUser(adminEmail, adminPasswordHash, role.Id);
+            var success = await _httpService.HttpPostRequest($"User", admin);
 
-            };
-            return await _httpService.HttpPostRequest($"User", admin);
+            return success;
         }
 
-        private async Task<bool> CreateDepartmentAsync() // Skapa avdelningar
+        private async Task<bool> CreateDepartmentAsync()
         {
-
             var departments = new List<Department>
             {
-                new Department {  Name = "Adminstatör" },
+                new Department { Name = "Adminstatör" },
                 new Department { Name = "2A" },
                 new Department { Name = "2B" },
                 new Department { Name = "1A" }
             };
-            foreach (var department in departments)
+
+            var tasks = departments.Select(department => _httpService.HttpPostRequest("Department", department)).ToList();
+
+            var results = await Task.WhenAll(tasks);
+
+            return results.All(success => success);
+        }
+        private bool IsValidInput(string email, string password)
+        {
+            return !string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password);
+        }
+
+        private async Task<User> GetLoggedInUserAsync(string email)
+        {
+            var users = await _modelManagement.UpdateListAsync<User>();
+            return users?.FirstOrDefault(u => u.Email == email);
+        }
+
+        private bool VerifyPassword(string inputPassword, string storedPasswordHash)
+        {
+            return _modelManagement.VerifyPassword(inputPassword, storedPasswordHash);
+        }
+        private async Task<Role> GetRoleAsync(string roleName)
+        {
+            return await _httpService.HttpGetRequest<Role>($"Role/{roleName}");
+        }
+        private User CreateAdminUser(string email, string passwordHash, int roleId)
+        {
+            return new User
             {
-                var success = await _httpService.HttpPostRequest($"Department", department);
-                if (!success)
-                {
-                    return false;
-                }
-            }
-            return true;
-
-
+                Email = email,
+                Password = passwordHash,
+                RoleId = roleId
+            };
         }
     }
 }
