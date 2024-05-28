@@ -42,37 +42,30 @@ namespace EmployeeManagement.Core.Pages.UserManagment
         {
 
             User = await GetUserById(userId);
+            if (User == null)
+            {
+                return NotFound();
+            }
 
-            var messages = await _httpService.HttpGetRequest<List<Message>>($"Message/UserId/{userId}");
+            var messages = await GetMessagesForUserAsync(userId);
             foreach (var message in messages)
             {
-                var fromUser = await GetUserById(message.FromUserId);
-                var currentUser = await GetUserById(message.ToUserId);
-
-                if (fromUser != null && currentUser != null)
+                var userMessage = await CreateMessageAsync(message);
+                if (userMessage != null)
                 {
-                    var customMessage = new CustomMessageModel
-                    {
-                        Id = message.Id,
-                        Title = message.Title,
-                        Content = message.Content,
-                        SentAt = message.SentAt,
-                        IsRead = message.IsRead,
-                        FromUser = fromUser,
-                        CurrentUser = currentUser,
-                    };
-                    Messages.Add(customMessage);
+                    Messages.Add(userMessage);
                 }
             }
-                return Page();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostReadMessage()
         {
-            if (Message.Id != null && Message.FromUserId != null && Message.ToUserId != null && Message.Content != null && Message.IsRead)
+            if (Message.Id != null && Message.FromUserId != null && Message.ToUserId != null && !string.IsNullOrEmpty(Message.Content) && Message.IsRead)
             {
-                await _httpService.HttpUpdateRequest($"Message/{ Message.Id}", Message);
-                return base.RedirectToPage(new { userId =Message.ToUserId });
+                await UpdateMessageAsync(Message);
+                return RedirectToPage(new { userId = Message.ToUserId });
             }
 
             return BadRequest();
@@ -80,6 +73,11 @@ namespace EmployeeManagement.Core.Pages.UserManagment
         public async Task<IActionResult> OnPostAsync(int userId)
         {
             User = await GetUserById(userId);
+            if (User == null)
+            {
+                return NotFound();
+            }
+
             var roleName = User.IsAdmin() ? "admin" : "user";
             var roleUser = await GetUserByRoleName(roleName, userId);
             if (roleUser != null)
@@ -88,11 +86,10 @@ namespace EmployeeManagement.Core.Pages.UserManagment
             }
 
             Message.SentAt = DateTime.Now;
-            if (ModelState.IsValid || Message != null)
+            if (ModelState.IsValid && Message != null)
             {
-                await _httpService.HttpPostRequest($"Message", Message);
+                await PostMessageAsync(Message);
                 return RedirectToPage(new { userId = Message.FromUserId });
-
             }
 
             return BadRequest();
@@ -104,6 +101,40 @@ namespace EmployeeManagement.Core.Pages.UserManagment
         private async Task<User> GetUserByRoleName(string roleName, int userId)
         {
             return await _httpService.HttpGetRequest<User>($"User/roleName/{roleName}/userId/{userId}");
+        }
+        private async Task<CustomMessageModel> CreateMessageAsync(Message message)
+        {
+            var fromUser = await GetUserById(message.FromUserId);
+            var currentUser = await GetUserById(message.ToUserId);
+
+            if (fromUser != null && currentUser != null)
+            {
+                return new CustomMessageModel
+                {
+                    Id = message.Id,
+                    Title = message.Title,
+                    Content = message.Content,
+                    SentAt = message.SentAt,
+                    IsRead = message.IsRead,
+                    FromUser = fromUser,
+                    CurrentUser = currentUser,
+                };
+            }
+            return null;
+        }
+
+        private async Task UpdateMessageAsync(Message message)
+        {
+            await _httpService.HttpUpdateRequest($"Message/{message.Id}", message);
+        }
+
+        private async Task PostMessageAsync(Message message)
+        {
+            await _httpService.HttpPostRequest($"Message", message);
+        }
+        private async Task<List<Message>> GetMessagesForUserAsync(int userId)
+        {
+            return await _httpService.HttpGetRequest<List<Message>>($"Message/UserId/{userId}");
         }
     }
 }

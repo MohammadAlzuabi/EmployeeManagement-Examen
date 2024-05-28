@@ -37,33 +37,44 @@ namespace EmployeeManagement.Core.Pages
         {
             var user = await GetUserById(userId);
 
-            if (file != null)
+            if (file != null && ValidateFileSize(file))
             {
-                if (file.Length > 0 && file.Length < 30000 || file.Length > 30000)
+                FileData.File = await ConvertFileToByteArrayAsync(file);
+
+                if (user != null)
                 {
-                    using (var target = new MemoryStream())
-                    {
-                        file.CopyTo(target);
-                        FileData.File = target.ToArray();
+                    FileData.UserId = userId;
+                }
 
-                    }
-                    if (user != null)
-                    {
-                        FileData.UserId = userId;
-                    }
-                    if (FileData.UserId != null && FileData.File != null && FileData.Name != null)
-                    {
-                        await _httpService.HttpPostRequest($"FileData", FileData);
-                        StatusMessage = "Din fil har laddats upp!";
-
-                    }
-                    else
-                    {
-                        StatusMessage = "Det uppstod ett fel vid uppladdning av filen";
-                    }
+                if (FileData.UserId != null && FileData.File != null && FileData.Name != null)
+                {
+                    await UploadFileDataAsync(FileData);
+                    StatusMessage = "Din fil har laddats upp!";
+                }
+                else
+                {
+                    StatusMessage = "Det uppstod ett fel vid uppladdning av filen";
                 }
             }
             return RedirectToPage("/FilePage");
+        }
+        private bool ValidateFileSize(IFormFile file)
+        {
+            return file.Length > 0 && file.Length <= 30000;
+        }
+
+        private async Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+        private async Task UploadFileDataAsync(FileData fileData)
+        {
+            await _httpService.HttpPostRequest($"FileData", fileData);
         }
         private async Task<User> GetUserById(int userId)
         {

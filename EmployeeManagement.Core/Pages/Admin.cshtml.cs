@@ -46,8 +46,6 @@ namespace EmployeeManagement.Core.Pages
                        p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
                        p.Role.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
                        .ToList();
-               Departments = Departments.Where(p =>
-                       p.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
                 return Page();
             }
             return Page();
@@ -57,21 +55,21 @@ namespace EmployeeManagement.Core.Pages
         public async Task<IActionResult> OnPostDeleteUser([FromForm] int deleteId)
         {
             if (deleteId != 0)
-                await _httpService.HttpDeleteRequest<Models.User>($"User/{deleteId}");
-
+            {
+                await DeleteUserAsync(deleteId);
+            }
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostNewUser()
         {
 
-            if (NewUser != null && NewUser.Email != null)
+            if (NewUser != null && !string.IsNullOrWhiteSpace(NewUser.Email))
             {
                 NewUser.Email = NewUser.Email.Trim();
                 NewUser.Password = _modelManagement.HashPassword(NewUser.Password);
-                await _httpService.HttpPostRequest($"User", NewUser);
+                await CreateUserAsync(NewUser);
             }
-
             return RedirectToPage();
         }
 
@@ -80,10 +78,24 @@ namespace EmployeeManagement.Core.Pages
             if (EditUser != null && EditUser.Id != 0)
             {
                 EditUser.Email = EditUser.Email.Trim();
-                await _httpService.HttpUpdateRequest($"User/{EditUser.Id}", EditUser);
-
+                await UpdateUserAsync(EditUser);
             }
             return RedirectToPage();
+        }
+
+        private async Task DeleteUserAsync(int userId)
+        {
+            await _httpService.HttpDeleteRequest<Models.User>($"User/{userId}");
+        }
+
+        private async Task CreateUserAsync(User newUser)
+        {
+            await _httpService.HttpPostRequest($"User", newUser);
+        }
+
+        private async Task UpdateUserAsync(User editUser)
+        {
+            await _httpService.HttpUpdateRequest($"User/{editUser.Id}", editUser);
         }
     }
 }

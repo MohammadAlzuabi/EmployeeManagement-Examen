@@ -26,28 +26,33 @@ namespace EmployeeManagement.Core.Pages
 
         public async Task<IActionResult> OnPostDownloadAsync(int? id)
         {
-            var myFile = await _httpService.HttpGetRequest<FileData>($"FileData/{id}");
-            if (myFile == null || myFile.File == null)
+            var fileData = await GetFileDataAsync(id);
+            if (fileData == null || fileData.File == null)
             {
                 return NotFound();
             }
 
-            byte[] byteArr = myFile.File;
-            string mimeType = "application/pdf";
-            return new FileContentResult(byteArr, mimeType);
+            return File(fileData.File, "application/pdf");
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int? id)
         {
-            var myFile = await _httpService.HttpGetRequest<FileData>($"FileData/{id}");
-            if (myFile == null || myFile.File == null)
+            var fileData = await GetFileDataAsync(id);
+            if (fileData == null || fileData.File == null)
             {
                 return NotFound();
             }
 
-            await _httpService.HttpDeleteRequest<User>($"FileData/{id}");
-
+            await DeleteFileDataAsync(id);
             return RedirectToPage();
+        }
+        private async Task<FileData> GetFileDataAsync(int? id)
+        {
+            return await _httpService.HttpGetRequest<FileData>($"FileData/{id}");
+        }
+        private async Task DeleteFileDataAsync(int? id)
+        {
+            await _httpService.HttpDeleteRequest<User>($"FileData/{id}");
         }
     }
 }
